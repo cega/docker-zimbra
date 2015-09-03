@@ -186,6 +186,25 @@ EOF
 }
 
 
+install_supervisor() {
+
+cat > /etc/supervisor/conf.d/supervisord.conf <<EOF
+[supervisord]
+nodaemon=true
+
+[program:zimbra]
+command=/opt/zimbra.sh
+EOF
+
+#  postfix
+cat >> /opt/zimbra.sh <<EOF
+#!/bin/bash
+su zimbra -c "/opt/zimbra/bin/zmcontrol start"
+EOF
+
+}
+
+
 install_zimbra () {
 
 [ -f /opt/zimbra/bin/zmcontrol ] && exit 0
@@ -205,5 +224,4 @@ echo "Installing Zimbra Collaboration injecting the configuration"
 
 init_config
 install_zimbra
-
-su zimbra -c "zmcontrol start"
+install_supervisor

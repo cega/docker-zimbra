@@ -8,7 +8,8 @@ MAINTAINER hernad@bring.out.ba
 
 # Thank you: Jorge de la Cruz <jorgedlcruz@gmail.com>
 
-RUN sudo apt-get update && sudo apt-get install -y wget
+RUN sed -e 's/archive./ba.archive./' /etc/apt/sources.list -i
+RUN sudo apt-get update && sudo apt-get install -y supervisor curl wget
 
 VOLUME ["/tmp_data"]
 VOLUME ["/opt/zimbra"]
