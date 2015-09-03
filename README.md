@@ -14,7 +14,7 @@
      -p 8080:8080 -p 8443:8443 -p 7071:7071 -p 9071:9071 \
      -h zimbra86.local \
      -v $ZIMBRA_VOL:/opt/zimbra \
-     -v $ZIMBRA_TMP_VOL:/tmp_vol \
+     -v $ZIMBRA_TMP_VOL:/tmp_data \
      -it \
      -e PASSWORD=Zimbra2015 \
      zimbra
