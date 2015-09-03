@@ -19,7 +19,7 @@
      -e PASSWORD=Zimbra2015 \
      zimbra
 
-##  Enironment vars
+##  Environment vars
 
 | ENVAR | default | description |
 | ----- | ------- | ------------ |
