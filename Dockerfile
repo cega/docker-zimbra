@@ -29,5 +29,5 @@ EXPOSE 8443
 EXPOSE 7071
 
 ADD start.sh /start.sh
-
-CMD ["/bin/bash", "/start.sh"]
+RUN chmod +x /start.sh
+CMD /start.sh; /opt/install.sh;/usr/bin/supervisord -c /etc/supervisor/supervisord.conf
