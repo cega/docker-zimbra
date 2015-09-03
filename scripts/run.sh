@@ -1,5 +1,5 @@
-ZIMBRA_TMP_VOL=$(pwd)/tmp_data
-ZIMBRA_VOL=$(pwd)/opt_zimbra
+ZIMBRA_TMP_VOL=/data/zimbra/tmp_data
+ZIMBRA_VOL=/data/zimbra/opt_zimbra
 docker run \
  -p 25:25 -p 80:80 -p 456:456 -p 587:587 -p 110:110 \
  -p 143:143 -p 993:993 -p 995:995 -p 443:443 \
