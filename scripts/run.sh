@@ -17,11 +17,11 @@ docker run \
  -h zimbra86.local \
  -v $ZIMBRA_TMP_VOL:/tmp_data \
  -v $ZIMBRA_VOL:/opt/zimbra \
- -v $ZIMBRA_TMP_VOL_DATA:/opt/zimbra/data \
- -v $ZIMBRA_TMP_VOL_LOG:/opt/zimbra/log \
- -v $ZIMBRA_TMP_VOL_CONF:/opt/zimbra/conf \
- -v $ZIMBRA_TMP_VOL_DB:/opt/zimbra/db \
- -v $ZIMBRA_TMP_VOL_STORE:/opt/zimbra/store \
+ -v $ZIMBRA_VOL_DATA:/opt/zimbra/data \
+ -v $ZIMBRA_VOL_LOG:/opt/zimbra/log \
+ -v $ZIMBRA_VOL_CONF:/opt/zimbra/conf \
+ -v $ZIMBRA_VOL_DB:/opt/zimbra/db \
+ -v $ZIMBRA_VOL_STORE:/opt/zimbra/store \
  -it \
  -e PASSWORD=Zimbra2015 \
  zimbra $1
