@@ -8,7 +8,7 @@ ZIMBRA_TGZ=${ZIMBRA_TGZ:-zcs-8.6.0_GA_1153.UBUNTU14_64.20141215151116.tgz}
 
 init_config() {
 
-[ -f /opt/zimbra/bin/zmcontrol ] && return
+[ -f /etc/default/bind9.new ] && return
 
 HOSTNAME=$(hostname -a)
 DOMAIN=$(hostname -d)
@@ -19,9 +19,11 @@ RANDOMVIRUS=$(date +%s|sha256sum|base64|head -c 10)
 ## Installing the DNS Server ##
 echo "Installing DNS Server"
 sudo apt-get update && sudo sudo apt-get install -y bind9 bind9utils bind9-doc dnsutils
+
 echo "Configuring DNS Server"
 sed "s/-u/-4 -u/g" /etc/default/bind9 > /etc/default/bind9.new
-mv /etc/default/bind9.new /etc/default/bind9
+cp /etc/default/bind9.new /etc/default/bind9
+
 rm /etc/bind/named.conf.options
 cat <<EOF >>/etc/bind/named.conf.options
 options {
@@ -39,12 +41,14 @@ auth-nxdomain no; # conform to RFC1035
 
 };
 EOF
-cat <<EOF >>/etc/bind/named.conf.local
+
+cat <<EOF >/etc/bind/named.conf.local
 zone "$DOMAIN" {
         type master;
         file "/etc/bind/db.$DOMAIN";
 };
 EOF
+
 touch /etc/bind/db.$DOMAIN
 cat <<EOF >/etc/bind/db.$DOMAIN
 \$TTL  604800
@@ -73,6 +77,38 @@ apt-get update
 echo "Download and install Zimbra Collaboration dependencies"
 sudo apt-get install -y netcat-openbsd sudo libidn11 libpcre3 libgmp10 libexpat1 libstdc++6 libperl5.18 libaio1 resolvconf unzip pax sysstat sqlite3
 
+}
+
+
+install_supervisor() {
+
+cat > /etc/supervisor/conf.d/supervisord.conf <<EOF
+[supervisord]
+nodaemon=true
+
+[program:zimbra]
+command=/opt/zimbra_start.sh
+
+[program:syslog]
+command=/usr/sbin/rsyslogd -n
+
+[program:bind9]
+command=/usr/sbin/named -c /etc/bind/named.conf -u bind -f
+EOF
+
+cat > /opt/zimbra_start.sh <<EOF
+#!/bin/bash
+su zimbra -c "/opt/zimbra/bin/zmcontrol start"
+EOF
+
+chmod +x /opt/zimbra_start.sh
+}
+
+
+install_zimbra () {
+
+[ -f /opt/zimbra/bin/zmcontrol ] && return
+
 ## Building and adding the Scripts keystrokes and the config.defaults
 touch /tmp_data/installZimbra-keystrokes
 cat <<EOF >/tmp_data/installZimbra-keystrokes
@@ -80,7 +116,8 @@ y
 y
 y
 y
-n
+y
+y
 y
 y
 y
@@ -185,31 +222,6 @@ zimbra_require_interprocess_security="1"
 INSTALL_PACKAGES="zimbra-core zimbra-ldap zimbra-logger zimbra-mta zimbra-snmp zimbra-store zimbra-apache zimbra-spell zimbra-memcached zimbra-proxy"
 EOF
 
-}
-
-
-install_supervisor() {
-
-cat > /etc/supervisor/conf.d/supervisord.conf <<EOF
-[supervisord]
-nodaemon=true
-
-[program:zimbra]
-command=/opt/zimbra_start.sh
-EOF
-
-cat > /opt/zimbra_start.sh <<EOF
-#!/bin/bash
-su zimbra -c "/opt/zimbra/bin/zmcontrol start"
-EOF
-
-chmod +x /opt/zimbra_start.sh
-}
-
-
-install_zimbra () {
-
-[ -f /opt/zimbra/bin/zmcontrol ] && return
 
 ##Install the Zimbra Collaboration ##
 echo "Downloading Zimbra Collaboration $ZIMBRA_VER"
