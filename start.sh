@@ -127,6 +127,9 @@ install_zimbra () {
 
 
 cat <<EOF >/dev/null
+
+Agree with License ? [N]
+
 The Zimbra Collaboration Server does not appear to be installed,
 yet there appears to be a ZCS directory structure in /opt/zimbra.
 
@@ -165,6 +168,7 @@ EOF
 # Don't install zimbra-dnscache
 touch /tmp_data/installZimbra-keystrokes
 cat <<EOF >/tmp_data/installZimbra-keystrokes
+y
 n
 y
 y
