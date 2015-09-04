@@ -1,5 +1,5 @@
-#!/bin/sh
-## Preparing all the variables like IP, Hostname, etc, all of them from the container
+#!/bin/bash
+
 ZIMBRA_VER=${ZIMBRA_VER:-8.6.0_GA}
 ZIMBRA_TGZ=${ZIMBRA_TGZ:-zcs-8.6.0_GA_1153.UBUNTU14_64.20141215151116.tgz}
 #CONTAINERIP=$(ip addr | grep 'state UP' -A2 | tail -n1 | awk '{print $2}' | cut -f1  -d'/')
@@ -89,8 +89,6 @@ command=/usr/sbin/rsyslogd -n
 [program:bind9]
 command=/usr/sbin/named -c /etc/bind/named.conf -u bind -f
 
-[program:ntpd]
-command=/etc/init.d/ntp start
 EOF
 
 service supervisor restart &
@@ -283,7 +281,7 @@ echo "Downloading Zimbra Collaboration $ZIMBRA_VER"
 [ -f /tmp_data/$ZIMBRA_TGZ ] || wget https://files.zimbra.com/downloads/$ZIMBRA_VER/$ZIMBRA_TGZ -O /tmp_data/$ZIMBRA_TGZ
 
 cd /tmp_data
-tar xzvf zcs-*.tgz
+tar xzf zcs-*.tgz
 
 chown zimbra:zimbra -R /opt/zimbra
 
@@ -295,7 +293,9 @@ done
 echo "Installing Zimbra Collaboration just the Software"
 cd /tmp_data/zcs-* 
 
-if [ "$ZIMBRA_MANUAL_SETUP" == "yes" ] ; then
+echo zimbra manual setup: $ZIMBRA_MANUAL_SETUP
+
+if [[ "$ZIMBRA_MANUAL_SETUP" == "yes" ]] ; then
    ./install.sh -s
 else
    ./install.sh -s < /tmp_data/installZimbra-keystrokes
