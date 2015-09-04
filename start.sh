@@ -4,7 +4,8 @@
 ZIMBRA_VER=${ZIMBRA_VER:-8.6.0_GA}
 ZIMBRA_TGZ=${ZIMBRA_TGZ:-zcs-8.6.0_GA_1153.UBUNTU14_64.20141215151116.tgz}
 
-#sleep 5
+DNS_FORWARD_1=${DNS_FORWARD_1:-8.8.8.8}
+DNS_FORWARD_2=${DNS_FORWARD_2:-8.8.4.4}
 
 init_config() {
 
@@ -33,8 +34,8 @@ listen-on { 127.0.0.1; }; # ns1 private IP address - listen on private network o
 allow-transfer { none; }; # disable zone transfers by default
 
 forwarders {
-8.8.8.8;
-8.8.4.4;
+$DNS_FORWARD_1;
+$DNS_FORWARD_2;
 };
 auth-nxdomain no; # conform to RFC1035
 #listen-on-v6 { any; };
@@ -107,16 +108,18 @@ chmod +x /opt/zimbra_start.sh
 
 install_zimbra () {
 
-[ -f /opt/zimbra/bin/zmcontrol ] && return
+[ -f /opt/zimbra/bin/zmcontrol ] && echo zmcontrol exists ... nothing to do && return
 
 ## Building and adding the Scripts keystrokes and the config.defaults
+
+# Don't install zimbra-dnscache
 touch /tmp_data/installZimbra-keystrokes
 cat <<EOF >/tmp_data/installZimbra-keystrokes
 y
 y
 y
 y
-y
+n
 y
 y
 y
