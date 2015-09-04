@@ -8,6 +8,8 @@ ZIMBRA_TGZ=${ZIMBRA_TGZ:-zcs-8.6.0_GA_1153.UBUNTU14_64.20141215151116.tgz}
 
 init_config() {
 
+[ -f /opt/zimbra/bin/zmcontrol ] && return
+
 HOSTNAME=$(hostname -a)
 DOMAIN=$(hostname -d)
 CONTAINERIP=$(ip addr | grep 'state UP' -A2 | tail -n1 | awk '{print $2}' | cut -f1  -d'/')
@@ -207,7 +209,7 @@ EOF
 
 install_zimbra () {
 
-[ -f /opt/zimbra/bin/zmcontrol ] && exit 0
+[ -f /opt/zimbra/bin/zmcontrol ] && return
 
 ##Install the Zimbra Collaboration ##
 echo "Downloading Zimbra Collaboration 8.6"
@@ -225,5 +227,4 @@ echo "Installing Zimbra Collaboration injecting the configuration"
 init_config
 install_zimbra
 install_supervisor
-
 

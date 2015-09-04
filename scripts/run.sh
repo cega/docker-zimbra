@@ -13,4 +13,4 @@ docker run \
  -v $ZIMBRA_TMP_VOL:/tmp_data \
  -it \
  -e PASSWORD=Zimbra2015 \
- zimbra
+ zimbra $1
