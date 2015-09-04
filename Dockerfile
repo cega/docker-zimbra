@@ -9,7 +9,7 @@ MAINTAINER hernad@bring.out.ba
 # Thank you: Jorge de la Cruz <jorgedlcruz@gmail.com>
 
 RUN sed -e 's/archive./ba.archive./' /etc/apt/sources.list -i
-RUN sudo apt-get update && sudo apt-get install -y supervisor curl wget
+RUN sudo apt-get update && sudo apt-get install -y supervisor ntp curl wget
 
 VOLUME ["/tmp_data", "/opt/zimbra", "/opt/zimbra/data", "/opt/zimbra/log", "/opt/zimbra/conf", "/opt/zimbra/conf", "/opt/zimbra/store" ]
 

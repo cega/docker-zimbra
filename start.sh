@@ -95,6 +95,9 @@ command=/usr/sbin/rsyslogd -n
 
 [program:bind9]
 command=/usr/sbin/named -c /etc/bind/named.conf -u bind -f
+
+[program:ntpd]
+command=/etc/init.d/ntp start
 EOF
 
 cat > /opt/zimbra_start.sh <<EOF
