@@ -28,7 +28,7 @@ EXPOSE 8080
 EXPOSE 8443
 EXPOSE 7071
 
-RUN useradd --uid 999 --home /opt/zimbra zimbra
+RUN useradd --shell /bin/bash --uid 999 --home /opt/zimbra zimbra
 RUN chown zimbra.zimbra /opt/zimbra
 ADD start.sh /start.sh
 RUN chmod +x /start.sh
