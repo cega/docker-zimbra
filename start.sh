@@ -18,8 +18,6 @@ RANDOMHAM=$(date +%s|sha256sum|base64|head -c 10)
 RANDOMSPAM=$(date +%s|sha256sum|base64|head -c 10)
 RANDOMVIRUS=$(date +%s|sha256sum|base64|head -c 10)
 ## Installing the DNS Server ##
-echo "Installing DNS Server"
-sudo apt-get update && sudo sudo apt-get install -y bind9 bind9utils bind9-doc dnsutils
 
 echo "Configuring DNS Server"
 sed "s/-u/-4 -u/g" /etc/default/bind9 > /etc/default/bind9.new
@@ -71,24 +69,17 @@ imap     IN      A      $CONTAINERIP
 imap4     IN      A      $CONTAINERIP
 smtp     IN      A      $CONTAINERIP
 EOF
-sudo service bind9 restart 
-
-##Install the Zimbra Collaboration OS dependencies and Zimbra package ##
-apt-get update
-echo "Download and install Zimbra Collaboration dependencies"
-sudo apt-get install -y netcat-openbsd sudo libidn11 libpcre3 libgmp10 libexpat1 libstdc++6 libperl5.18 libaio1 resolvconf unzip pax sysstat sqlite3
 
 }
 
 
-install_supervisor() {
+install_supervisor_base() {
 
-cat > /etc/supervisor/conf.d/supervisord.conf <<EOF
+[ -f /etc/supervisor/conf.d/base.conf ] && echo supervisor base exists ... && return
+
+cat > /etc/supervisor/conf.d/base.conf <<EOF
 [supervisord]
 nodaemon=true
-
-[program:zimbra]
-command=/opt/zimbra_start.sh
 
 [program:syslog]
 command=/usr/sbin/rsyslogd -n
@@ -100,13 +91,32 @@ command=/usr/sbin/named -c /etc/bind/named.conf -u bind -f
 command=/etc/init.d/ntp start
 EOF
 
+service supervisor restart
+}
+
+install_supervisor_zimbra() {
+
+[ -f /etc/supervisor/conf.d/zimbra.conf ] && echo supervisor zimbra exists ... && return
+cat > /etc/supervisor/conf.d/zimbra.conf <<EOF
+[supervisord]
+nodaemon=true
+
+[program:zimbra]
+command=/opt/zimbra_start.sh
+
+EOF
+
 cat > /opt/zimbra_start.sh <<EOF
 #!/bin/bash
 su zimbra -c "/opt/zimbra/bin/zmcontrol start"
 EOF
 
 chmod +x /opt/zimbra_start.sh
+
+service supervisor restart
 }
+
+
 
 
 install_zimbra () {
@@ -246,6 +256,7 @@ echo "Installing Zimbra Collaboration injecting the configuration"
 }
 
 init_config
+install_supervisor_base
 install_zimbra
-install_supervisor
+install_supervisor_zimbra
 
