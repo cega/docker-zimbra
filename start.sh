@@ -195,15 +195,15 @@ cat > /etc/supervisor/conf.d/supervisord.conf <<EOF
 nodaemon=true
 
 [program:zimbra]
-command=/opt/zimbra.sh
+command=/opt/zimbra_start.sh
 EOF
 
-#  postfix
-cat >> /opt/zimbra.sh <<EOF
+cat > /opt/zimbra_start.sh <<EOF
 #!/bin/bash
 su zimbra -c "/opt/zimbra/bin/zmcontrol start"
 EOF
 
+chmod +x /opt/zimbra_start.sh
 }
 
 
@@ -212,7 +212,7 @@ install_zimbra () {
 [ -f /opt/zimbra/bin/zmcontrol ] && return
 
 ##Install the Zimbra Collaboration ##
-echo "Downloading Zimbra Collaboration 8.6"
+echo "Downloading Zimbra Collaboration $ZIMBRA_VER"
 [ -f /tmp_data/$ZIMBRA_TGZ ] || wget https://files.zimbra.com/downloads/$ZIMBRA_VER/$ZIMBRA_TGZ -O /tmp_data/$ZIMBRA_TGZ
 
 cd /tmp_data

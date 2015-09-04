@@ -11,22 +11,10 @@ MAINTAINER hernad@bring.out.ba
 RUN sed -e 's/archive./ba.archive./' /etc/apt/sources.list -i
 RUN sudo apt-get update && sudo apt-get install -y supervisor curl wget
 
-VOLUME ["/tmp_data"]
-VOLUME ["/opt/zimbra"]
+VOLUME ["/tmp_data", "/opt/zimbra", "/opt/zimbra/data", "/opt/zimbra/log", "/opt/zimbra/conf", "/opt/zimbra/conf", "/opt/zimbra/store" ]
 
-EXPOSE 22
-EXPOSE 25
-EXPOSE 456
-EXPOSE 587
-EXPOSE 110
-EXPOSE 143
-EXPOSE 993
-EXPOSE 995
-EXPOSE 80
-EXPOSE 443
-EXPOSE 8080
-EXPOSE 8443
-EXPOSE 7071
+EXPOSE 25 456 587 110 143 993 995
+EXPOSE 80 443 8080 8443 7071
 
 RUN useradd --shell /bin/bash --uid 999 --home /opt/zimbra zimbra
 RUN chown zimbra.zimbra /opt/zimbra
