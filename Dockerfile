@@ -29,7 +29,7 @@ EXPOSE 8443
 EXPOSE 7071
 
 RUN useradd --uid 999 --home /opt/zimbra zimbra
-RUN chown zimbra.zimbra  +x /opt/zimbra
+RUN chown zimbra.zimbra /opt/zimbra
 ADD start.sh /start.sh
 RUN chmod +x /start.sh
 CMD /start.sh; /usr/bin/supervisord -c /etc/supervisor/supervisord.conf
