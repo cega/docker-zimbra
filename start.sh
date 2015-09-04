@@ -1,9 +1,11 @@
 #!/bin/sh
 ## Preparing all the variables like IP, Hostname, etc, all of them from the container
-
 ZIMBRA_VER=${ZIMBRA_VER:-8.6.0_GA}
 ZIMBRA_TGZ=${ZIMBRA_TGZ:-zcs-8.6.0_GA_1153.UBUNTU14_64.20141215151116.tgz}
-
+#CONTAINERIP=$(ip addr | grep 'state UP' -A2 | tail -n1 | awk '{print $2}' | cut -f1  -d'/')
+ZIMBRA_IP=${ZIMBRA_IP:-127.0.0.1}
+ZIMBRA_MANUAL_SETUP=${ZIMBRA_MANUAL_SETUP:-no}
+	
 DNS_FORWARD_1=${DNS_FORWARD_1:-8.8.8.8}
 DNS_FORWARD_2=${DNS_FORWARD_2:-8.8.4.4}
 
@@ -13,7 +15,6 @@ init_config() {
 
 HOSTNAME=$(hostname -a)
 DOMAIN=$(hostname -d)
-CONTAINERIP=$(ip addr | grep 'state UP' -A2 | tail -n1 | awk '{print $2}' | cut -f1  -d'/')
 RANDOMHAM=$(date +%s|sha256sum|base64|head -c 10)
 RANDOMSPAM=$(date +%s|sha256sum|base64|head -c 10)
 RANDOMVIRUS=$(date +%s|sha256sum|base64|head -c 10)
@@ -32,8 +33,8 @@ listen-on { 127.0.0.1; }; # ns1 private IP address - listen on private network o
 allow-transfer { none; }; # disable zone transfers by default
 
 forwarders {
-$DNS_FORWARD_1;
-$DNS_FORWARD_2;
+ $DNS_FORWARD_1;
+ $DNS_FORWARD_2;
 };
 auth-nxdomain no; # conform to RFC1035
 #listen-on-v6 { any; };
@@ -43,8 +44,8 @@ EOF
 
 cat <<EOF >/etc/bind/named.conf.local
 zone "$DOMAIN" {
-        type master;
-        file "/etc/bind/db.$DOMAIN";
+	type master;
+	file "/etc/bind/db.$DOMAIN";
 };
 EOF
 
@@ -52,22 +53,23 @@ touch /etc/bind/db.$DOMAIN
 cat <<EOF >/etc/bind/db.$DOMAIN
 \$TTL  604800
 @      IN      SOA    ns1.$DOMAIN. root.localhost. (
-                              2        ; Serial
-                        604800        ; Refresh
-                          86400        ; Retry
-                        2419200        ; Expire
-                        604800 )      ; Negative Cache TTL
+			      2        ; Serial
+			604800        ; Refresh
+			  86400        ; Retry
+			2419200        ; Expire
+			604800 )      ; Negative Cache TTL
 ;
 @     IN      NS      ns1.$DOMAIN.
-@     IN      A      $CONTAINERIP
+@     IN      A      $ZIMBRA_IP
 @     IN      MX     10     $HOSTNAME.$DOMAIN.
-$HOSTNAME     IN      A      $CONTAINERIP
-ns1     IN      A      $CONTAINERIP
-mail     IN      A      $CONTAINERIP
-pop3     IN      A      $CONTAINERIP
-imap     IN      A      $CONTAINERIP
-imap4     IN      A      $CONTAINERIP
-smtp     IN      A      $CONTAINERIP
+$HOSTNAME.$DOMAIN.   IN      MX     10   $HOSTNAME.$DOMAIN.
+$HOSTNAME     IN      A      $ZIMBRA_IP
+ns1      IN      A      $ZIMBRA_IP
+mail     IN      A      $ZIMBRA_IP
+pop3     IN      A      $ZIMBRA_IP
+imap     IN      A      $ZIMBRA_IP
+imap4    IN      A      $ZIMBRA_IP
+smtp     IN      A      $ZIMBRA_IP
 EOF
 
 }
@@ -91,7 +93,7 @@ command=/usr/sbin/named -c /etc/bind/named.conf -u bind -f
 command=/etc/init.d/ntp start
 EOF
 
-service supervisor restart
+service supervisor restart &
 }
 
 install_supervisor_zimbra() {
@@ -113,9 +115,9 @@ EOF
 
 chmod +x /opt/zimbra_start.sh
 
-service supervisor restart
-}
+service supervisor restart &
 
+}
 
 
 
@@ -125,10 +127,47 @@ install_zimbra () {
 
 ## Building and adding the Scripts keystrokes and the config.defaults
 
+
+cat <<EOF >/dev/null
+The Zimbra Collaboration Server does not appear to be installed,
+yet there appears to be a ZCS directory structure in /opt/zimbra.
+
+Would you like to delete /opt/zimbra before installing? [N] 
+
+Select the packages to install
+
+Install zimbra-ldap [Y] 
+Install zimbra-logger [Y] 
+Install zimbra-mta [Y] 
+Install zimbra-dnscache [Y] n
+Install zimbra-snmp [Y] 
+Install zimbra-store [Y] 
+Install zimbra-apache [Y] 
+Install zimbra-spell [Y] 
+Install zimbra-memcached [Y] 
+Install zimbra-proxy [Y] 
+Checking required space for zimbra-core
+Checking space for zimbra-store
+Checking required packages for zimbra-store
+zimbra-store package check complete.
+Installing:
+    zimbra-core
+    zimbra-ldap
+    zimbra-logger
+    zimbra-mta
+    zimbra-snmp
+    zimbra-store
+    zimbra-apache
+    zimbra-spell
+    zimbra-memcached
+    zimbra-proxy
+The system will be modified.  Continue? [N] y
+EOF
+
 # Don't install zimbra-dnscache
 touch /tmp_data/installZimbra-keystrokes
 cat <<EOF >/tmp_data/installZimbra-keystrokes
-y
+n
 y
 y
 y
@@ -226,7 +265,7 @@ zimbraFeatureBriefcasesEnabled="Enabled"
 zimbraFeatureTasksEnabled="Enabled"
 zimbraIPMode="ipv4"
 zimbraMailProxy="FALSE"
-zimbraMtaMyNetworks="127.0.0.0/8 $CONTAINERIP/24 [::1]/128 [fe80::]/64"
+zimbraMtaMyNetworks="127.0.0.0/8 $ZIMBRA_IP/24 [::1]/128 [fe80::]/64"
 zimbraPrefTimeZoneId="America/Los_Angeles"
 zimbraReverseProxyLookupTarget="TRUE"
 zimbraVersionCheckNotificationEmail="admin@$DOMAIN"
@@ -248,8 +287,20 @@ tar xzvf zcs-*.tgz
 
 chown zimbra:zimbra -R /opt/zimbra
 
+for f in apache core dnscache ldap logger memcached proxy snmp spell store 
+do
+   sudo apt-get purge -y zimbra-$f
+done
+
 echo "Installing Zimbra Collaboration just the Software"
-cd /tmp_data/zcs-* && ./install.sh -s < /tmp_data/installZimbra-keystrokes
+cd /tmp_data/zcs-* 
+
+if [ "$ZIMBRA_MANUAL_SETUP" == "yes" ] ; then
+   ./install.sh -s
+else
+   ./install.sh -s < /tmp_data/installZimbra-keystrokes
+fi
+
 echo "Installing Zimbra Collaboration injecting the configuration"
 /opt/zimbra/libexec/zmsetup.pl -c /tmp_data/installZimbraScript
 
