@@ -229,6 +229,9 @@ echo "Downloading Zimbra Collaboration $ZIMBRA_VER"
 
 cd /tmp_data
 tar xzvf zcs-*.tgz
+
+chown zimbra:zimbra -R /opt/zimbra
+
 echo "Installing Zimbra Collaboration just the Software"
 cd /tmp_data/zcs-* && ./install.sh -s < /tmp_data/installZimbra-keystrokes
 echo "Installing Zimbra Collaboration injecting the configuration"
