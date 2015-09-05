@@ -25,13 +25,13 @@
 | ----- | ------- | ------------ |
 | PASSWORD | - | admin password |
 | ZIMBRA_VER | 8.6.0_GA | zimbra version |
-| ZIMBRA_TGZ | zcs-8.6.0_GA_1153.UBUNTU14_64.20141215151116.tgz |
+| ZIMBRA_TGZ | zcs-8.6.0_GA_1153.UBUNTU14_64.20141215151116 |
 
 ## Zimbra versions
 
 | verzija| tgz |
 | ------ | ----|
-| 8.0.9_GA | zcs-8.0.9_GA_6191.UBUNTU14_64.20141103151539.tgz |
-| 8.6.0_GA | zcs-8.6.0_GA_1153.UBUNTU14_64.20141215151116.tgz |
+| 8.0.9_GA | zcs-8.0.9_GA_6191.UBUNTU14_64.20141103151539 |
+| 8.6.0_GA | zcs-8.6.0_GA_1153.UBUNTU14_64.20141215151116 |
 
 

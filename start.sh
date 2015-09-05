@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ZIMBRA_VER=${ZIMBRA_VER:-8.6.0_GA}
-ZIMBRA_TGZ=${ZIMBRA_TGZ:-zcs-8.6.0_GA_1153.UBUNTU14_64.20141215151116.tgz}
+ZIMBRA_TGZ=${ZIMBRA_TGZ:-zcs-8.6.0_GA_1153.UBUNTU14_64.20141215151116}
 #CONTAINERIP=$(ip addr | grep 'state UP' -A2 | tail -n1 | awk '{print $2}' | cut -f1  -d'/')
 ZIMBRA_IP=${ZIMBRA_IP:-127.0.0.1}
 ZIMBRA_MANUAL_SETUP=${ZIMBRA_MANUAL_SETUP:-no}
@@ -288,10 +288,10 @@ EOF
 
 ##Install the Zimbra Collaboration ##
 echo "Downloading Zimbra Collaboration $ZIMBRA_VER"
-[ -f /tmp_data/$ZIMBRA_TGZ ] || wget https://files.zimbra.com/downloads/$ZIMBRA_VER/$ZIMBRA_TGZ -O /tmp_data/$ZIMBRA_TGZ
+[ -f /tmp_data/$ZIMBRA_TGZ.tgz ] || wget https://files.zimbra.com/downloads/$ZIMBRA_VER/$ZIMBRA_TGZ.tgz -O /tmp_data/$ZIMBRA_TGZ.tgz
 
 cd /tmp_data
-tar xzf zcs-*.tgz
+tar xzf $ZIMBRA_TGZ.tgz
 
 chown zimbra:zimbra -R /opt/zimbra
 
@@ -301,7 +301,7 @@ do
 done
 
 echo "Installing Zimbra Collaboration just the Software"
-cd /tmp_data/zcs-* 
+cd /tmp_data/$ZIMBRA_TGZ
 
 echo zimbra manual setup: $ZIMBRA_MANUAL_SETUP
 
