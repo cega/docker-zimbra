@@ -60,8 +60,10 @@ init_config() {
 
 [ -f /etc/default/bind9.new ] && return
 
-HOSTNAME=$(hostname -a)
-DOMAIN=$(hostname -d)
+#HOSTNAME=$(hostname -a)
+#DOMAIN=$(hostname -d)
+HOSTNAME=$ZIMBRA_HOST
+DOMAIN=$ZIMBRA_DOMAIN
 RANDOMHAM=$(date +%s|sha256sum|base64|head -c 10)
 RANDOMSPAM=$(date +%s|sha256sum|base64|head -c 10)
 RANDOMVIRUS=$(date +%s|sha256sum|base64|head -c 10)
