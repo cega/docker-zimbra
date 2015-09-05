@@ -10,6 +10,52 @@ ZIMBRA_CLEANUP=${ZIMBRA_CLEANUP:-no}
 DNS_FORWARD_1=${DNS_FORWARD_1:-8.8.8.8}
 DNS_FORWARD_2=${DNS_FORWARD_2:-8.8.4.4}
 
+keystrokes() {
+
+if [[ $ZIMBRA_VER =~ ^8\.6.* ]] ; then  
+# Don't install zimbra-dnscache
+touch /tmp_data/installZimbra-keystrokes
+cat <<EOF >/tmp_data/installZimbra-keystrokes
+y
+n
+y
+y
+y
+n
+y
+y
+y
+y
+y
+y
+y
+y
+EOF
+
+fi
+
+
+if [[ $ZIMBRA_VER =~ ^8\.0.* ]] ; then  
+touch /tmp_data/installZimbra-keystrokes
+cat <<EOF >/tmp_data/installZimbra-keystrokes
+y
+y
+y
+y
+y
+y
+y
+y
+y
+y
+y
+y
+y
+EOF
+
+
+
+}
 init_config() {
 
 [ -f /etc/default/bind9.new ] && return
@@ -92,7 +138,6 @@ command=/usr/sbin/named -c /etc/bind/named.conf -u bind -f
 
 EOF
 
-service supervisor restart &
 }
 
 install_supervisor_zimbra() {
@@ -113,8 +158,6 @@ su zimbra -c "/opt/zimbra/bin/zmcontrol start"
 EOF
 
 chmod +x /opt/zimbra_start.sh
-
-service supervisor restart &
 
 }
 
@@ -171,24 +214,7 @@ Installing:
 The system will be modified.  Continue? [N] y
 EOF
 
-# Don't install zimbra-dnscache
-touch /tmp_data/installZimbra-keystrokes
-cat <<EOF >/tmp_data/installZimbra-keystrokes
-y
-n
-y
-y
-y
-n
-y
-y
-y
-y
-y
-y
-y
-y
-EOF
+keystrokes
 
 touch /tmp_data/installZimbraScript
 cat <<EOF >/tmp_data/installZimbraScript
@@ -327,8 +353,9 @@ init_config
 install_supervisor_base
 
 # we need dns for wget ...
-service supervisor restart &
-sleep 15
+service bind9 restart
+service rsyslog restart
+sleep 10
 install_zimbra
 
 install_supervisor_zimbra

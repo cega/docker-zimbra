@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CONTAINER_NAME=zimbra-807
+CONTAINER_NAME=zimbra-80
 ZIMBRA_TMP_VOL=/data/zimbra/tmp_data
 ZIMBRA_VOL=/data/zimbra/opt_zimbra
 ZIMBRA_VOL_DATA=/data/zimbra/opt_zimbra_data
@@ -17,7 +17,7 @@ ZIMBRA_TGZ=zcs-8.0.9_GA_6191.UBUNTU14_64.20141103151539
 DNS_FORWARD_1=192.168.168.20
 DNS_FORWARD_2=192.168.168.106
 ZIMBRA_HOST=zimbra
-ZIMBRA_DOMAIN=local
+ZIMBRA_DOMAIN=out.ba.local
 
 ZIMBRA_CLEANUP=yes
 

@@ -4,7 +4,7 @@ MAINTAINER hernad@bring.out.ba
 # Thank you: Jorge de la Cruz <jorgedlcruz@gmail.com>
 
 RUN sed -e 's/archive./ba.archive./' /etc/apt/sources.list -i
-RUN sudo apt-get update && sudo apt-get install -y supervisor ntp curl bind9 bind9utils bind9-doc dnsutils wget openssh-client vim
+RUN sudo apt-get update && sudo apt-get install -y supervisor ntp curl bind9 bind9utils bind9-doc dnsutils psutils wget openssh-client vim
 
 RUN echo "Download and install Zimbra Collaboration dependencies"
 RUN sudo apt-get install -y netcat-openbsd sudo libidn11 libpcre3 libgmp10 libexpat1 libstdc++6 libperl5.18 libaio1 resolvconf unzip pax sysstat sqlite3
