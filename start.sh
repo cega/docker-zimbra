@@ -287,8 +287,16 @@ EOF
 
 
 ##Install the Zimbra Collaboration ##
-echo "Downloading Zimbra Collaboration $ZIMBRA_VER"
-[ -f /tmp_data/$ZIMBRA_TGZ.tgz ] || wget https://files.zimbra.com/downloads/$ZIMBRA_VER/$ZIMBRA_TGZ.tgz -O /tmp_data/$ZIMBRA_TGZ.tgz
+
+if [ ! -s  /tmp_data/$ZIMBRA_TGZ.tgz ] ; then
+   echo $ZIMBRA_TGZ.tgz zero size, erasing
+   rm /tmp_data/$ZIMBRA_TGZ.tgz
+fi
+
+if [ ! -f /tmp_data/$ZIMBRA_TGZ.tgz ] ; then
+ echo "Downloading Zimbra Collaboration $ZIMBRA_VER"
+ wget https://files.zimbra.com/downloads/$ZIMBRA_VER/$ZIMBRA_TGZ.tgz -O /tmp_data/$ZIMBRA_TGZ.tgz
+fi
 
 cd /tmp_data
 tar xzf $ZIMBRA_TGZ.tgz
@@ -300,7 +308,6 @@ do
    sudo apt-get purge -y zimbra-$f
 done
 
-echo "Installing Zimbra Collaboration just the Software"
 cd /tmp_data/$ZIMBRA_TGZ
 
 echo zimbra manual setup: $ZIMBRA_MANUAL_SETUP
@@ -318,6 +325,10 @@ echo "Installing Zimbra Collaboration injecting the configuration"
 
 init_config
 install_supervisor_base
-install_zimbra
-install_supervisor_zimbra
 
+# we need dns for wget ...
+service supervisor restart &
+sleep 15
+install_zimbra
+
+install_supervisor_zimbra
