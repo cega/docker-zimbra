@@ -52,7 +52,7 @@ y
 y
 y
 EOF
-
+fi
 
 
 }
