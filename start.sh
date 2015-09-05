@@ -5,6 +5,7 @@ ZIMBRA_TGZ=${ZIMBRA_TGZ:-zcs-8.6.0_GA_1153.UBUNTU14_64.20141215151116.tgz}
 #CONTAINERIP=$(ip addr | grep 'state UP' -A2 | tail -n1 | awk '{print $2}' | cut -f1  -d'/')
 ZIMBRA_IP=${ZIMBRA_IP:-127.0.0.1}
 ZIMBRA_MANUAL_SETUP=${ZIMBRA_MANUAL_SETUP:-no}
+ZIMBRA_CLEANUP=${ZIMBRA_CLEANUP:-no}
 	
 DNS_FORWARD_1=${DNS_FORWARD_1:-8.8.8.8}
 DNS_FORWARD_2=${DNS_FORWARD_2:-8.8.4.4}
@@ -121,6 +122,11 @@ service supervisor restart &
 
 install_zimbra () {
 
+if [ "$ZIMBRA_CLEANUP" == "yes" ] ; then
+   rm -f -r /opt/zimbra/*
+   rm -f -r /opt/zimbra/t*
+fi
+ 
 [ -f /opt/zimbra/bin/zmcontrol ] && echo zmcontrol exists ... nothing to do && return
 
 ## Building and adding the Scripts keystrokes and the config.defaults
