@@ -6,7 +6,7 @@ ZIMBRA_TGZ=${ZIMBRA_TGZ:-zcs-8.6.0_GA_1153.UBUNTU14_64.20141215151116}
 ZIMBRA_IP=${ZIMBRA_IP:-127.0.0.1}
 ZIMBRA_MANUAL_SETUP=${ZIMBRA_MANUAL_SETUP:-no}
 ZIMBRA_CLEANUP=${ZIMBRA_CLEANUP:-no}
-	
+ZIMBRA_UPGRADE=${ZIMBRA_UPGRADE:-no}	
 DNS_FORWARD_1=${DNS_FORWARD_1:-8.8.8.8}
 DNS_FORWARD_2=${DNS_FORWARD_2:-8.8.4.4}
 
@@ -473,9 +473,9 @@ else
    /opt/zimbra/libexec/zmsetup.pl -c /tmp_data/installZimbraScript
 fi
 
-
+if [[ "$ZIMBRA_UPGRADE" != "no" ]] ; then
 su zimbra -c "/opt/zimbra/bin/zmprov setPassword admin@zimbra-82.bring.out.ba $ZIMBRA_PASSWORD"
-
+fi
 
 }
 
