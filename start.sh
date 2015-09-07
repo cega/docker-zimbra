@@ -359,17 +359,9 @@ EOF
 
 }
 
-install_supervisor_zimbra() {
+install_zimbra_start() {
 
-[ -f /etc/supervisor/conf.d/zimbra.conf ] && echo supervisor zimbra exists ... && return
-cat > /etc/supervisor/conf.d/zimbra.conf <<EOF
-[supervisord]
-nodaemon=true
-
-[program:zimbra]
-command=/opt/zimbra_start.sh
-
-EOF
+[ -f /opt/zimbra_start.sh ] && echo zimbra_start.sh exists ... && return
 
 cat > /opt/zimbra_start.sh <<EOF
 #!/bin/bash
@@ -379,7 +371,6 @@ EOF
 chmod +x /opt/zimbra_start.sh
 
 }
-
 
 
 install_zimbra () {
@@ -488,4 +479,5 @@ service rsyslog restart
 sleep 10
 install_zimbra
 
-install_supervisor_zimbra
+install_zimbra_start
+

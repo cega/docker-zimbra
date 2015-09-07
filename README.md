@@ -37,7 +37,7 @@
 
 ## Run
 
-Install zimbra 8.0.9 auto (manual = no), pobrisi raniju instalaciju zimbre ako je bilo (cleanup=yes):
+### Install zimbra 8.0.9 auto (manual = no), pobrisi raniju instalaciju zimbre ako je bilo (cleanup=yes):
 
     ZIMBRA_HOST=zimbra-82 ZIMBRA_DOMAIN=bring.out.ba \
     ZIMBRA_CLEANUP=yes ZIMBRA_MANUAL_INSTALL=no \
@@ -48,6 +48,11 @@ Install zimbra 8.0.9 auto (manual = no), pobrisi raniju instalaciju zimbre ako j
 In container shell prompt:
 
     ZIMBRA_CLEANUP=yes /start.sh
+
+
+### Run new container (already installed and configured)
+
+    scripts/run.sh
 
 
 Upgrade 8.0 -> 8.6
