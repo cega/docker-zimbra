@@ -43,7 +43,11 @@ Install zimbra 8.0.9 auto (manual = no), pobrisi raniju instalaciju zimbre ako j
     ZIMBRA_CLEANUP=yes ZIMBRA_MANUAL_INSTALL=no \
     ZIMBRA_PASSWORD=password \
     ZIMBRA_VER=8.0.9_GA ZIMBRA_TGZ=zcs-8.0.9_GA_6191.UBUNTU14_64.20141103151539 ZIMBRA_UPGRADE=no \
-    scripts/run.sh /bin/bash /start.sh
+    scripts/run.sh /bin/bash
+
+In container shell prompt:
+
+    ZIMBRA_CLEANUP=yes /start.sh
 
 
 Upgrade 8.0 -> 8.6
@@ -53,6 +57,5 @@ Upgrade 8.0 -> 8.6
     ZIMBRA_VER=8.6.0_GA ZIMBRA_TGZ=zcs-8.6.0_GA_1153.UBUNTU14_64.20141215151116 \
     ZIMBRA_UPGRADE=8.0 \
     scripts/run.sh /bin/bash /start.sh
-
 
 

@@ -22,7 +22,7 @@ DNS_FORWARD_2=192.168.168.106
 ZIMBRA_CLEANUP=${ZIMBRA_CLEANUP:-no}
 ZIMBRA_UPGRADE=${ZIMBRA_UPGRADE:-no}
 
-
+docker rm -f $CONTAINER_NAME
 
 docker run \
  --name $CONTAINER_NAME \
@@ -48,4 +48,4 @@ docker run \
  -e ZIMBRA_VER=$ZIMBRA_VER \
  -e ZIMBRA_TGZ=$ZIMBRA_TGZ \
  -e ZIMBRA_UPGRADE=$ZIMBRA_UPGRADE \
- zimbra $1 $2
+ zimbra $1 $2 
