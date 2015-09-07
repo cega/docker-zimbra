@@ -366,7 +366,9 @@ install_zimbra () {
 if [ "$ZIMBRA_CLEANUP" == "yes" ] ; then
    rm -f -r /opt/zimbra/*
    rm -f -r /opt/zimbra/t*
+   chown -R zimbra:zimbra /opt/zimbra
 fi
+
  
 [ -f /opt/zimbra/bin/zmcontrol ] && echo zmcontrol exists ... nothing to do && return
 
