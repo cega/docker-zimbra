@@ -13,6 +13,10 @@ mv $LDAP_DIR/mdb $LDAP_DIR/mdb.old
 
 mkdir -p mdb/db
 
+rm -rf /opt/zimbra/data/ldap/config
+rm -rf /opt/zimbra/data/ldap/mdb
+mkdir -p /opt/zimbra/data/ldap/config  /opt/zimbra/data/ldap/mdb/db /opt/zimbra/data/ldap/accesslog/db
+
 
 echo $CURDIR
 cd $CURDIR
