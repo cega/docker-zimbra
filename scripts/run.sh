@@ -48,4 +48,4 @@ docker run \
  -e ZIMBRA_VER=$ZIMBRA_VER \
  -e ZIMBRA_TGZ=$ZIMBRA_TGZ \
  -e ZIMBRA_UPGRADE=$ZIMBRA_UPGRADE \
- zimbra $1
+ zimbra $1 $2
