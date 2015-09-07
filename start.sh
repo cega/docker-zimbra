@@ -347,6 +347,8 @@ else
 fi
 
 echo "Installing Zimbra Collaboration injecting the configuration"
+
+# read from cat /opt/zimbra/config.31577
 /opt/zimbra/libexec/zmsetup.pl -c /tmp_data/installZimbraScript
 
 }
