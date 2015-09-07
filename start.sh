@@ -341,15 +341,15 @@ cd /tmp_data/$ZIMBRA_TGZ
 echo zimbra manual setup: $ZIMBRA_MANUAL_SETUP
 
 if [[ "$ZIMBRA_MANUAL_SETUP" == "yes" ]] ; then
-   ./install.sh -s
+   ./install.sh 
 else
    ./install.sh -s < /tmp_data/installZimbra-keystrokes
+   echo "Installing Zimbra Collaboration injecting the configuration"
+   # read from config e.g /opt/zimbra/config.31577
+   /opt/zimbra/libexec/zmsetup.pl -c /tmp_data/installZimbraScript
 fi
 
-echo "Installing Zimbra Collaboration injecting the configuration"
 
-# read from cat /opt/zimbra/config.31577
-/opt/zimbra/libexec/zmsetup.pl -c /tmp_data/installZimbraScript
 
 }
 
