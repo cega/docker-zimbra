@@ -12,6 +12,23 @@ DNS_FORWARD_2=${DNS_FORWARD_2:-8.8.4.4}
 
 zimbra_keystrokes() {
 
+
+if [[ $ZIMBRA_VER =~ ^8\.6.* ]] && [[ "$ZIMBRA_UPGRADE" == "8.0" ]] ; then
+
+# Don't install zimbra-dnscache
+touch /tmp_data/installZimbra-keystrokes
+cat <<EOF >/tmp_data/installZimbra-keystrokes
+y
+y
+y
+n
+y
+n
+EOF
+
+return
+fi
+  
 if [[ $ZIMBRA_VER =~ ^8\.6.* ]] ; then  
 # Don't install zimbra-dnscache
 touch /tmp_data/installZimbra-keystrokes
@@ -32,7 +49,9 @@ y
 y
 EOF
 
+return
 fi
+
 
 
 if [[ $ZIMBRA_VER =~ ^8\.0.* ]] ; then  
@@ -52,6 +71,8 @@ y
 y
 y
 EOF
+
+return
 fi
 
 
@@ -452,6 +473,8 @@ else
    /opt/zimbra/libexec/zmsetup.pl -c /tmp_data/installZimbraScript
 fi
 
+
+su zimbra -c "/opt/zimbra/bin/zmprov setPassword admin@zimbra-82.bring.out.ba $ZIMBRA_PASSWORD"
 
 
 }
