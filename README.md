@@ -50,7 +50,7 @@ In container shell prompt:
     ZIMBRA_CLEANUP=yes /start.sh
 
 
-### Run new container (already installed and configured)
+### Run new container (already installed and configured on host /data/zimbra/ )
 
     scripts/run.sh
 
