@@ -57,7 +57,7 @@ In container shell prompt:
 
 Upgrade 8.0 -> 8.6
 
-    ZIMBRA_HOST=zimbra-82 ZIMBRA_DOMAIN=bring.out.ba \
+    ZIMBRA_HOST=zimbra ZIMBRA_DOMAIN=out.ba.local \
     ZIMBRA_CLEANUP=no ZIMBRA_MANUAL_SETUP=yes \
     ZIMBRA_VER=8.6 \
     ZIMBRA_UPGRADE=8.0 \
