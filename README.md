@@ -63,5 +63,5 @@ Upgrade 8.0 -> 8.6
     ZIMBRA_UPGRADE=8.0 \
     scripts/run_container.sh /bin/bash
     
-    # su zimbra -c  "zmcontrol start"
+    # su zimbra -c  "/opt/zimbra/bin/zmcontrol start"
     # /start.sh
