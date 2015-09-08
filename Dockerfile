@@ -18,6 +18,7 @@ EXPOSE 80 443 8080 8443 7071
 ADD sudoers /etc/sudoers
 RUN chmod 0440 /etc/sudoers
 RUN useradd --shell /bin/bash --uid 999 --home /opt/zimbra zimbra
+#RUN useradd postfix
 RUN chown zimbra.zimbra /opt/zimbra
 ADD start.sh /start.sh
 RUN chmod +x /start.sh
