@@ -47,7 +47,7 @@
 
 In container shell prompt:
 
-    ZIMBRA_CLEANUP=yes /start.sh
+    # ZIMBRA_CLEANUP=yes /start.sh
 
 
 ### Run new container (already installed and configured on host /data/zimbra/ )
@@ -61,4 +61,7 @@ Upgrade 8.0 -> 8.6
     ZIMBRA_CLEANUP=no ZIMBRA_MANUAL_SETUP=yes \
     ZIMBRA_VER=8.6 \
     ZIMBRA_UPGRADE=8.0 \
-    scripts/run.sh /bin/bash /start.sh
+    scripts/run.sh /bin/bash
+    
+    # su zimbra -c  "zmcontrol start"
+    # /start.sh
