@@ -47,7 +47,7 @@
 
 In container shell prompt:
 
-    # ZIMBRA_CLEANUP=yes /start.sh
+    # /start.sh
 
 
 ### Run new container (already installed and configured on host /data/zimbra/ )
