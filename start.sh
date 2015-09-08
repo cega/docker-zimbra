@@ -5,13 +5,14 @@ ZIMBRA_TGZ=${ZIMBRA_TGZ:-zcs-8.6.0_GA_1153.UBUNTU14_64.20141215151116}
 #CONTAINERIP=$(ip addr | grep 'state UP' -A2 | tail -n1 | awk '{print $2}' | cut -f1  -d'/')
 ZIMBRA_IP=${ZIMBRA_IP:-127.0.0.1}
 ZIMBRA_MANUAL_SETUP=${ZIMBRA_MANUAL_SETUP:-no}
+
 ZIMBRA_CLEANUP=${ZIMBRA_CLEANUP:-no}
 ZIMBRA_UPGRADE=${ZIMBRA_UPGRADE:-no}	
+
 DNS_FORWARD_1=${DNS_FORWARD_1:-8.8.8.8}
 DNS_FORWARD_2=${DNS_FORWARD_2:-8.8.4.4}
 
 zimbra_keystrokes() {
-
 
 if [[ $ZIMBRA_VER =~ ^8\.6.* ]] && [[ "$ZIMBRA_UPGRADE" == "8.0" ]] ; then
 
@@ -465,7 +466,7 @@ else
 fi
 
 if [[ "$ZIMBRA_UPGRADE" != "no" ]] ; then
-su zimbra -c "/opt/zimbra/bin/zmprov setPassword admin@zimbra-82.bring.out.ba $ZIMBRA_PASSWORD"
+su zimbra -c "/opt/zimbra/bin/zmprov setPassword admin@$ZIMBRA_HOST.$ZIMBRA_DOMAIN $ZIMBRA_PASSWORD"
 fi
 
 }
