@@ -465,7 +465,7 @@ else
    /opt/zimbra/libexec/zmsetup.pl -c /tmp_data/installZimbraScript
 fi
 
-if [[ "$ZIMBRA_UPGRADE" != "no" ]] ; then
+if [[ "$ZIMBRA_UPGRADE" == "no" ]] ; then
 su zimbra -c "/opt/zimbra/bin/zmprov setPassword admin@$ZIMBRA_HOST.$ZIMBRA_DOMAIN $ZIMBRA_PASSWORD"
 fi
 
