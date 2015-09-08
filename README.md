@@ -40,7 +40,7 @@
 ### Install zimbra 8.0.9 auto (manual = no), pobrisi raniju instalaciju zimbre ako je bilo (cleanup=yes):
 
     ZIMBRA_HOST=zimbra ZIMBRA_DOMAIN=out.ba.local \
-    ZIMBRA_CLEANUP=no ZIMBRA_MANUAL_SETUP=no \
+    ZIMBRA_CLEANUP=no ZIMBRA_SETUP=setup \
     ZIMBRA_PASSWORD=password \
     ZIMBRA_VER=8.0 ZIMBRA_UPGRADE=no \
     scripts/run_container.sh /bin/bash
@@ -58,7 +58,7 @@ In container shell prompt:
 Upgrade 8.0 -> 8.6
 
     ZIMBRA_HOST=zimbra ZIMBRA_DOMAIN=out.ba.local \
-    ZIMBRA_CLEANUP=no ZIMBRA_MANUAL_SETUP=yes \
+    ZIMBRA_CLEANUP=no ZIMBRA_SETUP=manual \
     ZIMBRA_VER=8.6 \
     ZIMBRA_UPGRADE=8.0 \
     scripts/run_container.sh /bin/bash

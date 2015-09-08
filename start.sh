@@ -1,16 +1,31 @@
 #!/bin/bash
 
-ZIMBRA_VER=${ZIMBRA_VER:-8.6.0_GA}
-ZIMBRA_TGZ=${ZIMBRA_TGZ:-zcs-8.6.0_GA_1153.UBUNTU14_64.20141215151116}
+if [[ "$1" == "build" ]] ; then
+   DOCKER_BUILD=yes
+else
+   DOCKER_BUILD=no
+fi
+
 #CONTAINERIP=$(ip addr | grep 'state UP' -A2 | tail -n1 | awk '{print $2}' | cut -f1  -d'/')
 ZIMBRA_IP=${ZIMBRA_IP:-127.0.0.1}
-ZIMBRA_MANUAL_SETUP=${ZIMBRA_MANUAL_SETUP:-no}
+ZIMBRA_SETUP=${ZIMBRA_SETUP:-auto}
 
 ZIMBRA_CLEANUP=${ZIMBRA_CLEANUP:-no}
 ZIMBRA_UPGRADE=${ZIMBRA_UPGRADE:-no}	
 
 DNS_FORWARD_1=${DNS_FORWARD_1:-8.8.8.8}
 DNS_FORWARD_2=${DNS_FORWARD_2:-8.8.4.4}
+
+if [[ $ZIMBRA_VER =~ 8\.0 ]] ; then
+    ZIMBRA_VER=8.0.9_GA
+    ZIMBRA_TGZ=zcs-8.0.9_GA_6191.UBUNTU14_64.20141103151539
+fi
+
+if [[ $ZIMBRA_VER =~ 8\.6 ]] ; then
+    ZIMBRA_VER=8.6.0_GA
+    ZIMBRA_TGZ=zcs-8.6.0_GA_1153.UBUNTU14_64.20141215151116
+fi
+
 
 zimbra_keystrokes() {
 
@@ -25,12 +40,6 @@ y
 y
 y
 n
-y
-y
-y
-y
-y
-y
 y
 EOF
 
@@ -387,7 +396,7 @@ if [ "$ZIMBRA_CLEANUP" == "yes" ] ; then
 fi
 
  
-if [[ "$ZIMBRA_UPGRADE" == "no" ]] ; then
+if [[ "$ZIMBRA_UPGRADE" == "no" ]] && [[ "$ZIMBRA_SETUP" != "setup" ]] ; then
    [ -f /opt/zimbra/bin/zmcontrol ] && echo zmcontrol exists ... nothing to do && return
 fi
 
@@ -434,6 +443,8 @@ EOF
 zimbra_keystrokes
 zimbra_install_config
 
+if [[ "$ZIMBRA_SETUP" != "setup" ]] &&  [[ "$ZIMBRA_SETUP" != "no" ]]   ; then
+
 ##Install the Zimbra Collaboration ##
 
 if [ ! -s  /tmp_data/$ZIMBRA_TGZ.tgz ] ; then
@@ -449,29 +460,39 @@ fi
 cd /tmp_data
 tar xzf $ZIMBRA_TGZ.tgz
 
-chown zimbra:zimbra -R /opt/zimbra
+echo checkRequired u install.sh skripti provjerava /etc/hosts koji u docker build fazi ne moze biti ok
+sed -e 's/checkRequired$/echo no requirement/' /tmp_data/$ZIMBRA_TGZ/install.sh  -i
+#chown zimbra:zimbra -R /opt/zimbra
 
-if [[ "$ZIMBRA_UPGRADE" == "no" ]] ; then
- for f in apache core dnscache ldap logger memcached proxy snmp spell store 
- do
-   sudo apt-get purge -y zimbra-$f
- done
+#if [[ "$ZIMBRA_UPGRADE" == "no" ]] ; then
+# for f in apache core dnscache ldap logger memcached proxy snmp spell store 
+# do
+#   sudo apt-get purge -y zimbra-$f
+# done
+#fi
+
 fi
 
 cd /tmp_data/$ZIMBRA_TGZ
 
-echo zimbra manual setup: $ZIMBRA_MANUAL_SETUP
+echo zimbra setup: $ZIMBRA_SETUP
 
-if [[ "$ZIMBRA_MANUAL_SETUP" == "yes" ]] ; then
+if [[ "$ZIMBRA_SETUP" == "manual" ]] ; then
    ./install.sh 
 else
-   ./install.sh -s < /tmp_data/installZimbra-keystrokes
-   echo "Installing Zimbra Collaboration injecting the configuration"
-   # read from config e.g /opt/zimbra/config.31577
-   /opt/zimbra/libexec/zmsetup.pl -c /tmp_data/installZimbraScript
+
+   if [[ "$ZIMBRA_SETUP" == "auto" ]] ; then
+     ./install.sh -s < /tmp_data/installZimbra-keystrokes
+   fi
+
+   if [[ "$DOCKER_BUILD" == "no" ]] &&  [[ "$ZIMBRA_SETUP" == "setup" ]] ; then 
+     echo "Installing Zimbra Collaboration injecting the configuration"
+     # read from config e.g /opt/zimbra/config.31577
+     /opt/zimbra/libexec/zmsetup.pl -c /tmp_data/installZimbraScript
+   fi
 fi
 
-if [[ "$ZIMBRA_UPGRADE" == "no" ]] ; then
+if [[ "$ZIMBRA_UPGRADE" == "no" ]] && [[ "$DOCKER_BUILD" == "no" ]] && [[ "$ZIMBRA_SETUP" != "no" ]]  ; then
 su zimbra -c "/opt/zimbra/bin/zmprov setPassword admin@$ZIMBRA_HOST.$ZIMBRA_DOMAIN $ZIMBRA_PASSWORD"
 fi
 
