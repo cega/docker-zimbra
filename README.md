@@ -37,17 +37,13 @@
 
 ## Run
 
-### Install zimbra 8.0.9 auto (manual = no), pobrisi raniju instalaciju zimbre ako je bilo (cleanup=yes):
+### Install zimbra 8.0 (setup):
 
     ZIMBRA_HOST=zimbra ZIMBRA_DOMAIN=out.ba.local \
     ZIMBRA_CLEANUP=no ZIMBRA_SETUP=setup \
     ZIMBRA_PASSWORD=password \
     ZIMBRA_VER=8.0 ZIMBRA_UPGRADE=no \
-    scripts/run_container.sh /bin/bash
-
-In container shell prompt:
-
-    # /start.sh
+    scripts/run_container.sh /bin/bash /start.sh
 
 
 ### Run new container (already installed and configured on host /data/zimbra/ )
