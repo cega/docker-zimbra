@@ -20,11 +20,18 @@ if [[ $ZIMBRA_VER =~ ^8\.6.* ]] && [[ "$ZIMBRA_UPGRADE" == "8.0" ]] ; then
 touch /tmp_data/installZimbra-keystrokes
 cat <<EOF >/tmp_data/installZimbra-keystrokes
 y
+n
+y
 y
 y
 n
 y
-n
+y
+y
+y
+y
+y
+y
 EOF
 
 return
@@ -350,9 +357,6 @@ cat > /etc/supervisor/conf.d/base.conf <<EOF
 [supervisord]
 nodaemon=true
 
-[program:syslog]
-command=/usr/sbin/rsyslogd -n
-
 [program:bind9]
 command=/usr/sbin/named -c /etc/bind/named.conf -u bind -f
 
@@ -383,11 +387,11 @@ if [ "$ZIMBRA_CLEANUP" == "yes" ] ; then
 fi
 
  
-[ -f /opt/zimbra/bin/zmcontrol ] && echo zmcontrol exists ... nothing to do && return
+if [[ "$ZIMBRA_UPGRADE" == "no" ]] ; then
+   [ -f /opt/zimbra/bin/zmcontrol ] && echo zmcontrol exists ... nothing to do && return
+fi
 
 ## Building and adding the Scripts keystrokes and the config.defaults
-
-
 cat <<EOF >/dev/null
 
 Agree with License ? [N]
@@ -447,10 +451,12 @@ tar xzf $ZIMBRA_TGZ.tgz
 
 chown zimbra:zimbra -R /opt/zimbra
 
-for f in apache core dnscache ldap logger memcached proxy snmp spell store 
-do
+if [[ "$ZIMBRA_UPGRADE" == "no" ]] ; then
+ for f in apache core dnscache ldap logger memcached proxy snmp spell store 
+ do
    sudo apt-get purge -y zimbra-$f
-done
+ done
+fi
 
 cd /tmp_data/$ZIMBRA_TGZ
 
@@ -476,7 +482,6 @@ install_supervisor_base
 
 # we need dns for wget ...
 service bind9 restart
-service rsyslog restart
 sleep 10
 install_zimbra
 
