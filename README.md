@@ -58,7 +58,7 @@ In container shell prompt:
 Upgrade 8.0 -> 8.6
 
     ZIMBRA_HOST=zimbra-82 ZIMBRA_DOMAIN=bring.out.ba \
-    ZIMBRA_CLEANUP=no ZIMBRA_MANUAL_SETUP=no \
-    ZIMBRA_VER=8.6.0_GA ZIMBRA_TGZ=zcs-8.6.0_GA_1153.UBUNTU14_64.20141215151116 \
+    ZIMBRA_CLEANUP=no ZIMBRA_MANUAL_SETUP=yes \
+    ZIMBRA_VER=8.6 \
     ZIMBRA_UPGRADE=8.0 \
     scripts/run.sh /bin/bash /start.sh
