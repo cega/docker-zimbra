@@ -39,28 +39,29 @@
 
 ### Install zimbra 8.0.9 auto (manual = no), pobrisi raniju instalaciju zimbre ako je bilo (cleanup=yes):
 
-    ZIMBRA_HOST=zimbra-82 ZIMBRA_DOMAIN=bring.out.ba \
-    ZIMBRA_CLEANUP=yes ZIMBRA_MANUAL_INSTALL=no \
+    ZIMBRA_HOST=zimbra ZIMBRA_DOMAIN=out.ba.local \
+    ZIMBRA_CLEANUP=no ZIMBRA_MANUAL_SETUP=no \
     ZIMBRA_PASSWORD=password \
-    ZIMBRA_VER=8.0.9_GA ZIMBRA_TGZ=zcs-8.0.9_GA_6191.UBUNTU14_64.20141103151539 ZIMBRA_UPGRADE=no \
-    scripts/run.sh /bin/bash
+    ZIMBRA_VER=8.0 ZIMBRA_UPGRADE=no \
+    scripts/run_container.sh /bin/bash
 
 In container shell prompt:
 
-    ZIMBRA_CLEANUP=yes /start.sh
+    # ZIMBRA_CLEANUP=yes /start.sh
 
 
-### Run new container (already installed and configured)
+### Run new container (already installed and configured on host /data/zimbra/ )
 
-    scripts/run.sh
+    scripts/run_container.sh
 
 
 Upgrade 8.0 -> 8.6
 
     ZIMBRA_HOST=zimbra-82 ZIMBRA_DOMAIN=bring.out.ba \
-    ZIMBRA_CLEANUP=no ZIMBRA_MANUAL_INSTALL=no \
-    ZIMBRA_VER=8.6.0_GA ZIMBRA_TGZ=zcs-8.6.0_GA_1153.UBUNTU14_64.20141215151116 \
+    ZIMBRA_CLEANUP=no ZIMBRA_MANUAL_SETUP=yes \
+    ZIMBRA_VER=8.6 \
     ZIMBRA_UPGRADE=8.0 \
-    scripts/run.sh /bin/bash /start.sh
-
-
+    scripts/run_container.sh /bin/bash
+    
+    # su zimbra -c  "zmcontrol start"
+    # /start.sh
