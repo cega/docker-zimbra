@@ -43,10 +43,10 @@ build:
 
 Output:
 
-   zimbra-instance-zimbra-82.bring.out.ba   8.0                                        c618d8934d80        42 seconds ago      2.668 GB
-   zimbra-instance-zimbra.out.ba.local      8.0                                        75323d19eaf8        20 minutes ago      2.668 GB
-   zimbra                                   latest                                     36b1ef57de2d        32 minutes ago      307.4 MB
-   zimbra-dev                               latest                                     38d36ae5665a        2 hours ago         328.6 MB
+    zimbra-instance-zimbra-82.bring.out.ba   8.0                                        c618d8934d80        42 seconds ago      2.668 GB
+    zimbra-instance-zimbra.out.ba.local      8.0                                        75323d19eaf8        20 minutes ago      2.668 GB
+    zimbra                                   latest                                     36b1ef57de2d        32 minutes ago      307.4 MB
+    zimbra-dev                               latest                                     38d36ae5665a        2 hours ago         328.6 MB
 
 
 ### Run zimbra-82.bring.out.ba instance 
