@@ -22,11 +22,24 @@ ZIMBRA_SETUP=${ZIMBRA_SETUP:-no}
 
 docker rm -f $CONTAINER_NAME
 
+ZIMBRA_PRODUCTION=${ZIMBRA_PRODUCTION:-no}
+
+if [[ $ZIMBRA_PRODUCTION == yes ]] ; then
+ 
+ports="
+ -p 25:25 -p 80:80 -p 456:456 -p 587:587 -p 110:110 
+ -p 143:143 -p 993:993 -p 995:995 -p 443:443 
+ -p 8080:8080 -p 8443:8443 -p 7071:7071 -p 9071:9071 
+"
+
+else
+
+ports="-P"
+
+fi
+
 docker run \
  --name $CONTAINER_NAME \
- -p 25:25 -p 80:80 -p 456:456 -p 587:587 -p 110:110 \
- -p 143:143 -p 993:993 -p 995:995 -p 443:443 \
- -p 8080:8080 -p 8443:8443 -p 7071:7071 -p 9071:9071 \
  -h $ZIMBRA_HOST.$ZIMBRA_DOMAIN \
  -v $ZIMBRA_TMP_VOL:/tmp_data \
  -v $ZIMBRA_VOL_DATA:/opt/zimbra/data \
@@ -35,6 +48,7 @@ docker run \
  -v $ZIMBRA_VOL_DB:/opt/zimbra/db \
  -v $ZIMBRA_VOL_STORE:/opt/zimbra/store \
  -v /tmp/syslogdev/log:/dev/log \
+ $ports \
  --dns 127.0.0.1 \
  -it \
  -e ZIMBRA_PASSWORD=$ZIMBRA_PASSWORD \
