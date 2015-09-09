@@ -379,6 +379,7 @@ install_zimbra_start() {
 
 cat > /opt/zimbra_start.sh <<EOF
 #!/bin/bash
+rm -f /opt/zimbra/openldap/var/run/slapd.pid
 su zimbra -c "/opt/zimbra/bin/zmcontrol start"
 EOF
 
@@ -443,7 +444,7 @@ EOF
 zimbra_keystrokes
 zimbra_install_config
 
-if [[ "$ZIMBRA_SETUP" != "setup" ]] &&  [[ "$ZIMBRA_SETUP" != "no" ]]   ; then
+if [[ $ZIMBRA_SETUP =~ (auto|manual) ]] ; then
 
 ##Install the Zimbra Collaboration ##
 
@@ -477,6 +478,7 @@ cd /tmp_data/$ZIMBRA_TGZ
 
 echo zimbra setup: $ZIMBRA_SETUP
 
+
 if [[ "$ZIMBRA_SETUP" == "manual" ]] ; then
    ./install.sh 
 else
@@ -485,16 +487,18 @@ else
      ./install.sh -s < /tmp_data/installZimbra-keystrokes
    fi
 
-   if [[ "$DOCKER_BUILD" == "no" ]] &&  [[ "$ZIMBRA_SETUP" == "setup" ]] ; then 
+   if [[ "$DOCKER_BUILD" == "no" ]] &&  [[ $ZIMBRA_SETUP =~ (setup|auto) ]] ; then 
      echo "Installing Zimbra Collaboration injecting the configuration"
+     /opt/zimbra/libexec/zmfixperms -extended  -verbose
      # read from config e.g /opt/zimbra/config.31577
      /opt/zimbra/libexec/zmsetup.pl -c /tmp_data/installZimbraScript
    fi
 fi
 
-if [[ "$ZIMBRA_UPGRADE" == "no" ]] && [[ "$DOCKER_BUILD" == "no" ]] && [[ "$ZIMBRA_SETUP" != "no" ]]  ; then
+if [[ "$ZIMBRA_UPGRADE" == "no" ]] && [[ "$DOCKER_BUILD" == "no" ]] && [[ $ZIMBRA_SETUP =~ (auto|setup) ]]  ; then
 su zimbra -c "/opt/zimbra/bin/zmprov setPassword admin@$ZIMBRA_HOST.$ZIMBRA_DOMAIN $ZIMBRA_PASSWORD"
 fi
+
 
 }
 
