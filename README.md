@@ -35,8 +35,6 @@
 | 8.6.0_GA | zcs-8.6.0_GA_1153.UBUNTU14_64.20141215151116 |
 
 
-## Run
-
 ### Build docker images
 
 build:
@@ -71,20 +69,9 @@ Instance is running ...
 
       docker exec -ti  zimbra-zimbra-82.bring.out.ba-1 /bin/bash
 
-
 Container shell prompt:
 
       root@zimbra-82:/# RESTORE_MOD=yes_i_want_restore admin/zimbra_backup_restore.sh
 
 
 
-Upgrade 8.0 -> 8.6
-
-    ZIMBRA_HOST=zimbra ZIMBRA_DOMAIN=out.ba.local \
-    ZIMBRA_CLEANUP=no ZIMBRA_SETUP=manual \
-    ZIMBRA_VER=8.6 \
-    ZIMBRA_UPGRADE=8.0 \
-    scripts/run_container.sh /bin/bash
-    
-    # su zimbra -c  "/opt/zimbra/bin/zmcontrol start"
-    # /start.sh
