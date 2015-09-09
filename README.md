@@ -65,6 +65,7 @@ Volumes location: /data/zimbra/zimbra-82.bring.out.ba/{opt_zimbra_data, opt_zimb
 
 Backup has to be taken the same server (eg. zimbra-82.bring.out.ba)
 
+Backup location: /tmp_data/backup/{ldap/, mysql.db.list, mysql.sql/, store.tar.gz}
 Instance is running ...
 
 
