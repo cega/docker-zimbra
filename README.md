@@ -61,7 +61,7 @@ Volumes location: /data/zimbra/zimbra-82.bring.out.ba/{opt_zimbra_data, opt_zimb
 ### Restore data from backup
 
 
-Backup has to be taken the same server (eg. zimbra-82.bring.out.ba)
+Backup has to be taken the server with the same name (eg. zimbra-82.bring.out.ba), ZIMBRA_PASSWORD the same as the old server
 
 Backup location: /tmp_data/backup/{ldap/, mysql.db.list, mysql.sql/, store.tar.gz}
 Instance is running ...
@@ -71,7 +71,7 @@ Instance is running ...
 
 Container shell prompt:
 
-      root@zimbra-82:/# RESTORE_MOD=yes_i_want_restore admin/zimbra_backup_restore.sh
+      root@zimbra-82:/# ZIMBRA_PASSWORD=the_same_as_the_old_server RESTORE_MOD=yes_i_want_restore admin/zimbra_backup_restore.sh
 
 
 
