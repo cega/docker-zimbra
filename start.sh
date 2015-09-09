@@ -292,8 +292,11 @@ fi
 
 init_config() {
 
-[ -f /etc/default/bind9.new ] && return
+found=`cat /etc/bind/named.conf.local | grep -c $ZIMBRA_DOMAIN`
 
+if [[ $found != 0 ]]; then 
+  return
+fi
 #HOSTNAME=$(hostname -a)
 #DOMAIN=$(hostname -d)
 HOSTNAME=$ZIMBRA_HOST

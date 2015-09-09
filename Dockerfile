@@ -28,6 +28,6 @@ RUN chmod +x /start.sh
 
 RUN mkdir /admin
 ADD admin/* /admin/
-RUN chmod +x /admin/*.sh
+RUN chmod +xr /admin/*.sh
 
 CMD /start.sh ; service bind9 start ; /opt/zimbra_start.sh ; service bind9 stop ; /usr/bin/supervisord -c /etc/supervisor/supervisord.conf

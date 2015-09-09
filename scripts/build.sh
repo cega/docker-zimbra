@@ -1,14 +1,15 @@
 #!/bin/bash
 
-export ZIMBRA_VER=8.0
-export ZIMBRA_IMAGE=zimbra
-export ZIMBRA_HOST=zimbra
-export ZIMBRA_DOMAIN=out.ba.local
+
+export ZIMBRA_VER=${ZIMBRA_VER:-8.0}
+export ZIMBRA_HOST=${ZIMBRA_HOST:-zimbra}
+export ZIMBRA_DOMAIN=${ZIMBRA_DOMAIN:-out.ba.local}
+export ZIMBRA_IMAGE=${ZIMBRA_IMAGE:-zimbra}
 export ZIMBRA_PASSWORD=${ZIMBRA_PASSWORD:-password}
 export ZIMBRA_SETUP=auto
 export ZIMBRA_CLEANUP=yes
 export ZIMBRA_UPGRADE=no
-export CONTAINER_NAME=zimbra-instance
+export CONTAINER_NAME=zimbra-instance-$ZIMBRA_HOST.$ZIMBRA_DOMAIN
 
 build_img() {
  docker rmi -f $ZIMBRA_IMAGE

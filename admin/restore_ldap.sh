@@ -6,7 +6,7 @@ CURDIR=$(pwd)
 ldap stop
 
 
-BACKUP_DIR=./ldap_data
+BACKUP_DIR=./ldap
 
 LDAP_DIR=/opt/zimbra/data/ldap
 mv $LDAP_DIR/mdb $LDAP_DIR/mdb.old

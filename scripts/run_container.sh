@@ -1,17 +1,24 @@
 #!/bin/bash
 
-ZIMBRA_IMAGE=${ZIMBRA_IMAGE:-zimbra}
+
+ZIMBRA_VER=${ZIMBRA_VER:-8.0}
+ZIMBRA_IMAGE=${ZIMBRA_IMAGE:-zimbra-instance:$ZIMBRA_VER}
 CONTAINER_NAME=${CONTAINER_NAME:-zimbra-1}
 ZIMBRA_TMP_VOL=/data/zimbra/tmp_data
-ZIMBRA_VOL_DATA=/data/zimbra/opt_zimbra_data
-ZIMBRA_VOL_LOG=/data/zimbra/opt_zimbra_log
-ZIMBRA_VOL_CONF=/data/zimbra/opt_zimbra_conf
-ZIMBRA_VOL_DB=/data/zimbra/opt_zimbra_db
-ZIMBRA_VOL_STORE=/data/zimbra/opt_zimbra_store
 
-ZIMBRA_PASSWORD=${ZIMBRA_PASSWORD:-Zimbra2015}
 ZIMBRA_HOST=${ZIMBRA_HOST:-zimbra-82}
 ZIMBRA_DOMAIN=${ZIMBRA_DOMAIN:-bring.out.ba}
+
+ZIMBRA_TMP_VOL=/data/zimbra/tmp_data
+
+vol_prefix=/data/zimbra/$ZIMBRA_HOST.$ZIMBRA_DOMAIN
+ZIMBRA_VOL_DATA=$vol_prefix/opt_zimbra_data
+ZIMBRA_VOL_LOG=$vol_prefix/opt_zimbra_log
+ZIMBRA_VOL_CONF=$vol_prefix/opt_zimbra_conf
+ZIMBRA_VOL_DB=$vol_prefix/opt_zimbra_db
+ZIMBRA_VOL_STORE=$vol_prefix/opt_zimbra_store
+
+ZIMBRA_PASSWORD=${ZIMBRA_PASSWORD:-password}
 
 DNS_FORWARD_1=192.168.168.20
 DNS_FORWARD_2=192.168.168.106

@@ -37,22 +37,44 @@
 
 ## Run
 
-### Install zimbra 8.0.9 auto (manual = no), pobrisi raniju instalaciju zimbre ako je bilo (cleanup=yes):
+### Build docker images
 
-    ZIMBRA_HOST=zimbra ZIMBRA_DOMAIN=out.ba.local \
-    ZIMBRA_CLEANUP=no ZIMBRA_SETUP=setup \
-    ZIMBRA_PASSWORD=password \
-    ZIMBRA_VER=8.0 ZIMBRA_UPGRADE=no \
-    scripts/run_container.sh /bin/bash
+build:
 
-In container shell prompt:
+    ZIMBRA_HOST=zimbra-82 ZIMBRA_DOMAIN=bring.out.ba ZIMBRA_VER=8.0 scripts/build.sh
 
-    # /start.sh
+Output:
+
+   zimbra-instance-zimbra-82.bring.out.ba   8.0                                        c618d8934d80        42 seconds ago      2.668 GB
+   zimbra-instance-zimbra.out.ba.local      8.0                                        75323d19eaf8        20 minutes ago      2.668 GB
+   zimbra                                   latest                                     36b1ef57de2d        32 minutes ago      307.4 MB
+   zimbra-dev                               latest                                     38d36ae5665a        2 hours ago         328.6 MB
 
 
-### Run new container (already installed and configured on host /data/zimbra/ )
+### Run zimbra-82.bring.out.ba instance 
 
-    scripts/run_container.sh
+
+Volumes location: /data/zimbra/zimbra-82.bring.out.ba/{opt_zimbra_data, opt_zimbra_db, opt_zimbra_conf, opt_zimbra_store}
+    
+
+    ZIMBRA_HOST=zimbra-82 ZIMBRA_DOMAIN=bring.out.ba ZIMBRA_VER=8.0 scripts/run_instance.sh
+
+
+### Restore data from backup
+
+
+Backup has to be taken the same server (eg. zimbra-82.bring.out.ba)
+
+Instance is running ...
+
+
+      docker exec -ti  zimbra-zimbra-82.bring.out.ba-1 /bin/bash
+
+
+Container shell prompt:
+
+      root@zimbra-82:/# RESTORE_MOD=yes_i_want_restore admin/zimbra_backup_restore.sh
+
 
 
 Upgrade 8.0 -> 8.6
