@@ -500,6 +500,12 @@ fi
 
 if [[ "$ZIMBRA_UPGRADE" == "no" ]] && [[ "$DOCKER_BUILD" == "no" ]] && [[ $ZIMBRA_SETUP =~ (auto|setup) ]]  ; then
 su zimbra -c "/opt/zimbra/bin/zmprov setPassword admin@$ZIMBRA_HOST.$ZIMBRA_DOMAIN $ZIMBRA_PASSWORD"
+
+cd /opt/zimbra
+mkdir -p /tmp_data/$ZIMBRA_HOST.$ZIMBRA_DOMAIN/ldap
+chown zimbra:zimbra /tmp/data/$ZIMBRA_HOST.$ZIMBRA_DOMAIN/ldap
+tar -cvfz /tmp_data/${ZIMBRA_HOST}.${ZIMBRA_DOMAIN}/opt_zimbra.tar.gz --exclude=data/ldap/mdb  db conf data
+su zimbra -c "/admin/backup_ldap.sh /tmp_data/${ZIMBRA_HOST}.${ZIMBRA_DOMAIN}/ldap"
 fi
 
 

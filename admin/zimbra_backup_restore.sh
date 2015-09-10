@@ -18,14 +18,18 @@ set_zimbra_password() {
 if [[ $RESTORE_MOD == yes_i_want_restore ]] 
 then
 
+ su zimbra -c "/opt/zimbra/bin/zmcontrol stop"
+ rm -r -f /opt/zimbra/db/data/zimbra
+ rm -r -f /opt/zimbra/db/data/mbox*
+ 
  cd /tmp_data/backup
- su zimbra  -c "PATH=\$PATH:/opt/zimbra/bin && zmcontrol stop &&
+ su zimbra  -c "PATH=\$PATH:/opt/zimbra/bin &&
  cd /tmp_data/backup && /admin/restore_ldap.sh &&
  /admin/restore_mysql.sh &&
  cd /opt/zimbra && 
- tar xvf /tmp_data/backup/store.tar.gz"
+ tar xf /tmp_data/backup/store.tar.gz"
 
- /opt/zimbra/libexec/zmfixperms -extended  -verbose
+ /opt/zimbra/libexec/zmfixperms -extended
  su zimbra -c "/opt/zimbra/bin/ldap start"
  set_zimbra_password
  su zimbra -c "/opt/zimbra/bin/zmcontrol restart"
