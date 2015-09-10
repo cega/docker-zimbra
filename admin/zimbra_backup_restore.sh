@@ -26,7 +26,7 @@ then
  su zimbra  -c "PATH=\$PATH:/opt/zimbra/bin &&
  cd /tmp_data/backup && /admin/restore_ldap.sh &&
  /admin/restore_mysql.sh &&
- cd /opt/zimbra && 
+ cd /opt/zimbra && echo untaring  store.tar.gz ... &&  
  tar xf /tmp_data/backup/store.tar.gz"
 
  /opt/zimbra/libexec/zmfixperms -extended
