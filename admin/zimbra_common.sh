@@ -60,13 +60,13 @@ get_untar_zimbra_patch() {
 echo get $ZIMBRA_PATCH_FILE, then untar it to /tmp_data/
 
 if [ ! -s  /tmp_data/$ZIMBRA_PATCH_FILE.tgz ] ; then
-   echo $ZIMBRA_TGZ.tgz zero size, erasing
+   echo $ZIMBRA_PATCH_FILE.tgz zero size, erasing
    rm /tmp_data/$ZIMBRA_PATCH_FILE.tgz
 fi
 
 if [ ! -f /tmp_data/$ZIMBRA_PATCH_FILE.tgz ] ; then
  echo "Downloading Zimbra patch $ZIMBRA_VER / $ZIMBRA_PATCH : $ZIMBRA_PATCH_FILE.tgz"
- wget https://files.zimbra.com/downloads/$ZIMBRA_VER/$ZIMBRA_PATCH_FILE.tgz -O /tmp_data/$ZIMBRA_PATCH_FILE.tgz
+ wget https://files.zimbra.com/downloads/$ZIMBRA_VER/${ZIMBRA_PATCH_FILE}.tgz -O /tmp_data/${ZIMBRA_PATCH_FILE}.tgz
 fi
 
 cd /tmp_data
