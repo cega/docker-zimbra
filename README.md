@@ -61,7 +61,7 @@ Create new docker image from upgraded container:
 
 Run upgrade:
 
-     root@zimbra-82:/# ZIMBRA_VER=8.6 admin/zimbra_upgrade.sh
+     root@zimbra-82:/# ZIMBRA_VER=8.6 admin/zimbra_install_patch.sh
 
 
 Commit patched version as new zimbra-instance image:
