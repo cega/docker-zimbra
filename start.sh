@@ -6,46 +6,10 @@ else
    DOCKER_BUILD=no
 fi
 
-#CONTAINERIP=$(ip addr | grep 'state UP' -A2 | tail -n1 | awk '{print $2}' | cut -f1  -d'/')
-ZIMBRA_IP=${ZIMBRA_IP:-127.0.0.1}
-ZIMBRA_SETUP=${ZIMBRA_SETUP:-auto}
-
-ZIMBRA_CLEANUP=${ZIMBRA_CLEANUP:-no}
-ZIMBRA_UPGRADE=${ZIMBRA_UPGRADE:-no}	
-
-DNS_FORWARD_1=${DNS_FORWARD_1:-8.8.8.8}
-DNS_FORWARD_2=${DNS_FORWARD_2:-8.8.4.4}
-
-if [[ $ZIMBRA_VER =~ 8\.0 ]] ; then
-    ZIMBRA_VER=8.0.9_GA
-    ZIMBRA_TGZ=zcs-8.0.9_GA_6191.UBUNTU14_64.20141103151539
-fi
-
-if [[ $ZIMBRA_VER =~ 8\.6 ]] ; then
-    ZIMBRA_VER=8.6.0_GA
-    ZIMBRA_TGZ=zcs-8.6.0_GA_1153.UBUNTU14_64.20141215151116
-fi
-
+. /admin/zimbra_common.sh
 
 zimbra_keystrokes() {
 
-if [[ $ZIMBRA_VER =~ ^8\.6.* ]] && [[ "$ZIMBRA_UPGRADE" == "8.0" ]] ; then
-
-# Don't install zimbra-dnscache
-touch /tmp_data/installZimbra-keystrokes
-cat <<EOF >/tmp_data/installZimbra-keystrokes
-y
-n
-y
-y
-y
-n
-y
-EOF
-
-return
-fi
-  
 if [[ $ZIMBRA_VER =~ ^8\.6.* ]] ; then  
 # Don't install zimbra-dnscache
 touch /tmp_data/installZimbra-keystrokes
@@ -68,7 +32,6 @@ EOF
 
 return
 fi
-
 
 
 if [[ $ZIMBRA_VER =~ ^8\.0.* ]] ; then  
@@ -400,7 +363,7 @@ if [ "$ZIMBRA_CLEANUP" == "yes" ] ; then
 fi
 
  
-if [[ "$ZIMBRA_UPGRADE" == "no" ]] && [[ "$ZIMBRA_SETUP" != "setup" ]] ; then
+if [[ "$ZIMBRA_SETUP" != "setup" ]] ; then
    [ -f /opt/zimbra/bin/zmcontrol ] && echo zmcontrol exists ... nothing to do && return
 fi
 
@@ -449,31 +412,16 @@ zimbra_install_config
 
 if [[ $ZIMBRA_SETUP =~ (auto|manual) ]] ; then
 
-##Install the Zimbra Collaboration ##
+get_untar_zimbra_tgz
 
-if [ ! -s  /tmp_data/$ZIMBRA_TGZ.tgz ] ; then
-   echo $ZIMBRA_TGZ.tgz zero size, erasing
-   rm /tmp_data/$ZIMBRA_TGZ.tgz
-fi
-
-if [ ! -f /tmp_data/$ZIMBRA_TGZ.tgz ] ; then
- echo "Downloading Zimbra Collaboration $ZIMBRA_VER"
- wget https://files.zimbra.com/downloads/$ZIMBRA_VER/$ZIMBRA_TGZ.tgz -O /tmp_data/$ZIMBRA_TGZ.tgz
-fi
-
-cd /tmp_data
-tar xzf $ZIMBRA_TGZ.tgz
-
-echo checkRequired u install.sh skripti provjerava /etc/hosts koji u docker build fazi ne moze biti ok
-sed -e 's/checkRequired$/echo no requirement/' /tmp_data/$ZIMBRA_TGZ/install.sh  -i
+#echo checkRequired u install.sh skripti provjerava /etc/hosts koji u docker build fazi ne moze biti ok
+#sed -e 's/checkRequired$/echo no requirement/' /tmp_data/$ZIMBRA_TGZ/install.sh  -i
 #chown zimbra:zimbra -R /opt/zimbra
 
-#if [[ "$ZIMBRA_UPGRADE" == "no" ]] ; then
 # for f in apache core dnscache ldap logger memcached proxy snmp spell store 
 # do
 #   sudo apt-get purge -y zimbra-$f
 # done
-#fi
 
 fi
 
@@ -498,7 +446,7 @@ else
    fi
 fi
 
-if [[ "$ZIMBRA_UPGRADE" == "no" ]] && [[ "$DOCKER_BUILD" == "no" ]] && [[ $ZIMBRA_SETUP =~ (auto|setup) ]]  ; then
+if [[ $ZIMBRA_SETUP =~ (auto|setup) ]]  ; then
 su zimbra -c "/opt/zimbra/bin/zmprov setPassword admin@$ZIMBRA_HOST.$ZIMBRA_DOMAIN $ZIMBRA_PASSWORD"
 
 cd /opt/zimbra
