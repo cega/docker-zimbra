@@ -40,7 +40,6 @@ Container shell prompt:
       root@zimbra-82:/# ZIMBRA_PASSWORD=the_same_as_the_old_server RESTORE_MOD=yes_i_want_restore admin/zimbra_backup_restore.sh
 
 
-
 ## Upgrade zimbra-82.bring.out.ba instance to 8.6
 
 
@@ -53,6 +52,23 @@ Create new docker image from upgraded container:
 
       docker commit zimbra-zimbra-82.bring.out.ba-1 zimbra-instance-zimbra-82.bring.out.ba:8.6
  
+
+## Install patch zimbra 8.6 P4
+
+
+     docker exec -ti  zimbra-zimbra-82.bring.out.ba-1 /bin/bash
+
+
+Run upgrade:
+
+     root@zimbra-82:/# ZIMBRA_VER=8.6 admin/zimbra_upgrade.sh
+
+
+Commit patched version as new zimbra-instance image:
+ 
+     docker commit zimbra-zimbra-82.bring.out.ba-1 zimbra-instance-zimbra-82.bring.out.ba:8.6.P4
+
+
 
 ##  Environment vars
 
