@@ -21,19 +21,24 @@ ZIMBRA_VOL_STORE=$vol_prefix/opt_zimbra_store
 
 ZIMBRA_PRODUCTION=${ZIMBRA_PRODUCTION:-no}
 
+ZIMBRA_IP=${ZIMBRA_IP:-127.0.0.1}
+
 if [[ $ZIMBRA_PRODUCTION == yes ]] ; then
  
 ports="
- -p 25:25 -p 80:80 -p 456:456 -p 587:587 -p 110:110 
- -p 143:143 -p 993:993 -p 995:995 -p 443:443 
- -p 8080:8080 -p 8443:8443 -p 7071:7071 -p 9071:9071 
+ -p $ZIMBRA_IP:25:25 -p $ZIMBRA_IP:80:80 -p $ZIMBRA_IP:456:456 -p $ZIMBRA_IP:587:587 -p $ZIMBRA_IP:110:110 
+ -p $ZIMBRA_IP:143:143 -p $ZIMBRA_IP:993:993 -p $ZIMBRA_IP:995:995 -p $ZIMBRA_IP:443:443 
+ -p $ZIMBRA_IP:8080:8080 -p $ZIMBRA_IP:8443:8443 -p $ZIMBRA_IP:7071:7071 -p $ZIMBRA_IP:9071:9071 
 "
+sudo ip addr show | grep $ZIMBRA_IP || \
+  sudo ip addr add $ZIMBRA_IP/24 dev $S_DEV
 
 else
 
 ports="-P"
 
 fi
+
 
 
 docker rm -f $CONTAINER_NAME
