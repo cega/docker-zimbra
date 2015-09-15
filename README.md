@@ -69,6 +69,11 @@ Commit patched version as new zimbra-instance image:
      docker commit zimbra-zimbra-82.bring.out.ba-1 zimbra-instance-zimbra-82.bring.out.ba:8.6.P4
 
 
+## Run patched instance
+
+
+     ZIMBRA_HOST=zimbra-82 ZIMBRA_DOMAIN=bring.out.ba ZIMBRA_IMAGE=zimbra-instance-zimbra-82.bring.out.ba:8.6.P4 scripts/run_instance.sh
+
 
 ##  Environment vars
 
