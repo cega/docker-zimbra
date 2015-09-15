@@ -74,3 +74,17 @@ tar xzf $ZIMBRA_PATCH_FILE.tgz
 
 }
 
+
+
+zimbra_tar_db_conf_data_ldap_backup () {
+
+cd /opt/zimbra
+mkdir -p /tmp_data/$ZIMBRA_HOST.$ZIMBRA_DOMAIN/$ZIMBRA_VER/ldap
+su zimbra -c "/admin/backup_ldap.sh /tmp_data/${ZIMBRA_HOST}.${ZIMBRA_DOMAIN}/$ZIMBRA_VER/ldap"
+su zimbra -c "/opt/zimbra/bin/zmcontrol stop"
+tar -cvzf /tmp_data/${ZIMBRA_HOST}.${ZIMBRA_DOMAIN}/$ZIMBRA_VER/opt_zimbra.tar.gz --exclude=data/ldap/mdb  db conf data
+chown zimbra:zimbra -R /tmp_data/$ZIMBRA_HOST.$ZIMBRA_DOMAIN/$ZIMBRA_VER
+
+}
+
+
