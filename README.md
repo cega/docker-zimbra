@@ -26,10 +26,10 @@ Volumes location: /data/zimbra/zimbra-82.bring.out.ba/{opt_zimbra_data, opt_zimb
 
 ## Backup scripts
 
-   [backup_ldap](https://raw.githubusercontent.com/hernad/docker-zimbra/master/admin/backup_ldap.sh)
+1) [backup_store](https://raw.githubusercontent.com/hernad/docker-zimbra/master/admin/backup_store.sh)
+2) [backup_ldap](https://raw.githubusercontent.com/hernad/docker-zimbra/master/admin/backup_ldap.sh)   
+3) [backup_mysql](https://raw.githubusercontent.com/hernad/docker-zimbra/master/admin/backup_mysql.sh) 
   
-   [backup_mysql](https://raw.githubusercontent.com/hernad/docker-zimbra/master/admin/backup_mysql.sh)
-
 
      Backup lokacija #  ls /tmp_data/backup/
 
