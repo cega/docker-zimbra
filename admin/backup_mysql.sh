@@ -2,13 +2,15 @@
 
 source ~/bin/zmshutil ; zmsetvars
 
-mysql --batch --skip-column-names -e "show databases" | grep -e mbox -e zimbra > /backup/mysql.db.list
+BACKUP_BASE=/tmp_data/backup
+mkdir -p $BACKUP_BASE/mysql.sql
+cd $BACKUP_BASE
 
-mkdir -p /backup/mysql.sql
+mysql --batch --skip-column-names -e "show databases" | grep -e mbox -e zimbra > $BACKUP_BASE/mysql.db.list
 
-for db in `< /backup/mysql.db.list`
+for db in `< $BACKUP_BASE/mysql.db.list`
 do
    /opt/zimbra/mysql/bin/mysqldump $db -S /opt/zimbra/db/mysql.sock -u root \
-   --password=ROOT_SQL_PASSWORD > /backup/mysql.sql/$db.sql
+   --password=ROOT_SQL_PASSWORD > $BACKUP_BASE/mysql.sql/$db.sql
    echo -e "Dumped $db\n"
 done

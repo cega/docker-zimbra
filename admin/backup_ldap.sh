@@ -2,14 +2,14 @@
 
 PATH=$PATH:/opt/zimbra/bin
 
-mkdir -p /backup/ldap
-
-cd /backup
-
 if [[ "$1" != "" ]]; then
- BACKUP_DIR=$1
+   BACKUP_DIR=$1
 else
-  BACKUP_DIR=./ldap
+   BACKUP_BASE=/tmp_data/backup
+   mkdir -p $BACKUP_BASE/ldap
+   cd $BACKUP_BASE
+
+   BACKUP_DIR=$BACKUP_BASE/ldap
 fi
 
 echo LDAP backup to $BACKUP_DIR
