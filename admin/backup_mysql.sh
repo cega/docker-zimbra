@@ -11,6 +11,6 @@ mysql --batch --skip-column-names -e "show databases" | grep -e mbox -e zimbra >
 for db in `< $BACKUP_BASE/mysql.db.list`
 do
    /opt/zimbra/mysql/bin/mysqldump $db -S /opt/zimbra/db/mysql.sock -u root \
-   --password=ROOT_SQL_PASSWORD > $BACKUP_BASE/mysql.sql/$db.sql
+   --password=$mysql_root_password > $BACKUP_BASE/mysql.sql/$db.sql
    echo -e "Dumped $db\n"
 done
