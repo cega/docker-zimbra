@@ -2,6 +2,10 @@
 
 PATH=$PATH:/opt/zimbra/bin
 
+mkdir -p /backup/ldap
+
+cd /backup
+
 if [[ "$1" != "" ]]; then
  BACKUP_DIR=$1
 else

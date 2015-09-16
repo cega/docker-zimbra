@@ -35,6 +35,13 @@ Instance is running ...
 
       docker exec -ti  zimbra-zimbra-82.bring.out.ba-1 /bin/bash
 
+
+
+     Backup lokacija #  ls /tmp_data/backup/
+
+     -> ldap  mysql.db.list  mysql.sql  store.tar.gz
+
+
 Container shell prompt:
 
       root@zimbra-82:/# ZIMBRA_PASSWORD=the_same_as_the_old_server RESTORE_MOD=yes_i_want_restore admin/zimbra_backup_restore.sh
