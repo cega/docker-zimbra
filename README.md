@@ -24,6 +24,16 @@ Volumes location: /data/zimbra/zimbra-82.bring.out.ba/{opt_zimbra_data, opt_zimb
     ZIMBRA_HOST=zimbra-82 ZIMBRA_DOMAIN=bring.out.ba ZIMBRA_VER=8.0 scripts/run_instance.sh
 
 
+## Backup scripts
+
+   [backup_ldap](https://raw.githubusercontent.com/hernad/docker-zimbra/master/admin/backup_ldap.sh)
+
+
+     Backup lokacija #  ls /tmp_data/backup/
+
+     -> ldap  mysql.db.list  mysql.sql  store.tar.gz
+
+
 ## Restore zimbra data from backup
 
 
@@ -35,11 +45,6 @@ Instance is running ...
 
       docker exec -ti  zimbra-zimbra-82.bring.out.ba-1 /bin/bash
 
-
-
-     Backup lokacija #  ls /tmp_data/backup/
-
-     -> ldap  mysql.db.list  mysql.sql  store.tar.gz
 
 
 Container shell prompt:
