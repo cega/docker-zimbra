@@ -22,7 +22,7 @@ ZIMBRA_VOL_STORE=$vol_prefix/opt_zimbra_store
 ZIMBRA_PRODUCTION=${ZIMBRA_PRODUCTION:-no}
 
 ZIMBRA_IP=${ZIMBRA_IP:-127.0.0.1}
-
+ZIMBRA_ETH_DEV=${ZIMBRA_ETH_DEV:-eth0}
 if [[ $ZIMBRA_PRODUCTION == yes ]] ; then
  
 ports="
@@ -31,7 +31,7 @@ ports="
  -p $ZIMBRA_IP:8080:8080 -p $ZIMBRA_IP:8443:8443 -p $ZIMBRA_IP:7071:7071 -p $ZIMBRA_IP:9071:9071 
 "
 sudo ip addr show | grep $ZIMBRA_IP || \
-  sudo ip addr add $ZIMBRA_IP/24 dev $S_DEV
+  sudo ip addr add $ZIMBRA_IP/24 dev $ZIMBRA_ETH_DEV
 
 else
 
