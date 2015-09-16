@@ -75,6 +75,18 @@ Commit patched version as new zimbra-instance image:
      ZIMBRA_HOST=zimbra-82 ZIMBRA_DOMAIN=bring.out.ba ZIMBRA_IMAGE=zimbra-instance-zimbra-82.bring.out.ba:8.6.P4 scripts/run_instance.sh
 
 
+
+## Backup db, conf, data, ldap backup
+
+
+     ZIMBRA_VER=8.6 admin/tar_ldap.sh P4
+
+
+    root@zimbra-82:/# ls /tmp_data/zimbra-82.bring.out.ba/8.6.0_GA.P4/
+
+    -> ldap/  opt_zimbra.tar.gz
+
+
 ##  Environment vars
 
 | ENVAR | default | description |
