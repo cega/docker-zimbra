@@ -22,7 +22,6 @@ RUN useradd --uid 998 --gid 999 postfix
 RUN usermod --groups postfix zimbra
 
 RUN mkdir -p /opt/zimbra
-#RUN chown zimbra.zimbra /opt/zimbra
 ADD start.sh /start.sh
 RUN chmod +x /start.sh
 

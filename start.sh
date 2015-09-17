@@ -225,3 +225,6 @@ install_zimbra
 
 install_zimbra_start
 
+if [ -f /zimbra_config.sh ] ;
+   source /zimbra_config.sh
+fi

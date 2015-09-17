@@ -20,6 +20,9 @@ ZIMBRA_VOL_STORE=$vol_prefix/opt_zimbra_store
 
 ZIMBRA_PASSWORD=${ZIMBRA_PASSWORD:-password}
 
+ZIMBRA_IP=${ZIMBRA_IP:-127.0.0.1}
+ZIMBRA_DNS_IP=${ZIMBRA_DNS_IP:-127.0.0.1}
+
 DNS_FORWARD_1=192.168.168.20
 DNS_FORWARD_2=192.168.168.106
 
@@ -45,8 +48,14 @@ ports="-P"
 
 fi
 
+host_dns=" -h $ZIMBRA_HOST.$ZIMBRA_DOMAIN"
+host_dns="$host  --dns $ZIMBRA_DNS_IP"
+
+
 docker run \
  --name $CONTAINER_NAME \
+ $host_dns \
+ $ports \
  -h $ZIMBRA_HOST.$ZIMBRA_DOMAIN \
  -v $ZIMBRA_TMP_VOL:/tmp_data \
  -v $ZIMBRA_VOL_DATA:/opt/zimbra/data \
@@ -55,8 +64,6 @@ docker run \
  -v $ZIMBRA_VOL_DB:/opt/zimbra/db \
  -v $ZIMBRA_VOL_STORE:/opt/zimbra/store \
  -v /tmp/syslogdev/log:/dev/log \
- $ports \
- --dns 127.0.0.1 \
  -it \
  -e ZIMBRA_PASSWORD=$ZIMBRA_PASSWORD \
  -e ZIMBRA_HOST=$ZIMBRA_HOST \

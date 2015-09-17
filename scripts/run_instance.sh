@@ -9,7 +9,6 @@ export ZIMBRA_SETUP=no
 export ZIMBRA_UPGRADE=no
 export ZIMBRA_CLEANUP=no
 
-
 ZIMBRA_TMP_VOL=/data/zimbra/tmp_data
 
 vol_prefix=/data/zimbra/$ZIMBRA_HOST.$ZIMBRA_DOMAIN
@@ -41,9 +40,19 @@ ports="-P"
 
 fi
 
-host=" -h $ZIMBRA_HOST.$ZIMBRA_DOMAIN"
-host="$host  --dns $ZIMBRA_DNS_IP"
+host_dns=" -h $ZIMBRA_HOST.$ZIMBRA_DOMAIN"
+host_dns="$host  --dns $ZIMBRA_DNS_IP"
 
+
+vol_config_files=""
+
+if [ -f $(pwd)/zimbra_config.sh ] ; then
+   vol_config_files=" -v $(pwd)/zimbra_config.sh:/zimbra_config.sh"
+fi
+
+if [ -e /tmp/syslogdev/log ] ; then
+  vol_config_files="$vol_config_files -v /tmp/syslogdev/log:/dev/log"
+fi
 
 docker rm -f $CONTAINER_NAME
 docker run \
@@ -56,7 +65,7 @@ docker run \
  -v $ZIMBRA_VOL_CONF:/opt/zimbra/conf \
  -v $ZIMBRA_VOL_DB:/opt/zimbra/db \
  -v $ZIMBRA_VOL_STORE:/opt/zimbra/store \
- -v /tmp/syslogdev/log:/dev/log \
+ $vol_config_files \
  -it \
  -e ZIMBRA_HOST=$ZIMBRA_HOST \
  -e ZIMBRA_DOMAIN=$ZIMBRA_DOMAIN \
