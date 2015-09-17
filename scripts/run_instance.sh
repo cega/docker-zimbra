@@ -22,6 +22,7 @@ ZIMBRA_VOL_STORE=$vol_prefix/opt_zimbra_store
 ZIMBRA_PRODUCTION=${ZIMBRA_PRODUCTION:-no}
 
 ZIMBRA_IP=${ZIMBRA_IP:-127.0.0.1}
+ZIMBRA_DNS_IP=${ZIMBRA_DNS_IP:-127.0.0.1}
 ZIMBRA_ETH_DEV=${ZIMBRA_ETH_DEV:-eth0}
 if [[ $ZIMBRA_PRODUCTION == yes ]] ; then
  
@@ -33,19 +34,22 @@ ports="
 sudo ip addr show | grep $ZIMBRA_IP || \
   sudo ip addr add $ZIMBRA_IP/24 dev $ZIMBRA_ETH_DEV
 
+#host="--net=host"
 else
 
 ports="-P"
 
 fi
 
+host=" -h $ZIMBRA_HOST.$ZIMBRA_DOMAIN"
+host="$host  --dns $ZIMBRA_DNS_IP"
 
 
 docker rm -f $CONTAINER_NAME
 docker run \
  --name $CONTAINER_NAME \
  $ports \
- -h $ZIMBRA_HOST.$ZIMBRA_DOMAIN \
+ $host \
  -v $ZIMBRA_TMP_VOL:/tmp_data \
  -v $ZIMBRA_VOL_DATA:/opt/zimbra/data \
  -v $ZIMBRA_VOL_LOG:/opt/zimbra/log \
@@ -53,7 +57,6 @@ docker run \
  -v $ZIMBRA_VOL_DB:/opt/zimbra/db \
  -v $ZIMBRA_VOL_STORE:/opt/zimbra/store \
  -v /tmp/syslogdev/log:/dev/log \
- --dns 127.0.0.1 \
  -it \
  -e ZIMBRA_HOST=$ZIMBRA_HOST \
  -e ZIMBRA_DOMAIN=$ZIMBRA_DOMAIN \

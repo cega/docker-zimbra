@@ -110,7 +110,7 @@ Commit patched version as new zimbra-instance image:
 
 ## run zimbra in production mode (ZIMBRA_IP, ZIMBRA_PRODUCTION)
 
-    ZIMBRA_HOST=zimbra-82 ZIMBRA_DOMAIN=bring.out.ba ZIMBRA_IMAGE=zimbra-instance-zimbra-82.bring.out.ba:8.6.P4 ZIMBRA_PRODUCTION=yes ZIMBRA_IP=192.168.168.24 scripts/run_instance.sh
+    ZIMBRA_HOST=zimbra-82 ZIMBRA_DOMAIN=bring.out.ba ZIMBRA_IMAGE=zimbra-instance-zimbra-82.bring.out.ba:8.6.P4 ZIMBRA_PRODUCTION=yes ZIMBRA_IP=192.168.168.24 ZIMBRA_DNS_IP=192.168.45.7 scripts/run_instance.sh
 
 
 ##  Environment vars
